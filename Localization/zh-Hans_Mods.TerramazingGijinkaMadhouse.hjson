@@ -1,0 +1,80 @@
+Items: {
+	Indulgence: {
+		DisplayName: 赎罪券
+		Tooltip: 你已经免除了你的罪
+	}
+}
+
+NPCs: {
+	JHypnos: {
+		BestiaryText: 幻觉干扰大师，全天然·有机·高精电波无限禁忌知识的永恒智慧之魂正等待你的供奉。
+		ButtonText: 祈祷 (1 {0})
+
+		Chat: {
+			Common: {
+				0: 杂鱼普雷尔现在闭嘴给我祈祷，这是我的要求！
+				1: *掷硬币* 猜猜硬币会落在哪一面？
+				2: 拜托，我不会掷骰子，我妹才会。
+				3: 这是一个笑话的世界，而我是其中最·大的笑话家！
+				4: 萌萌可爱的人形皮囊可是每个邪教头头的必需品，嘻嘻！
+				5: 一支来自平行世界的修普诺斯头脑风暴正在逼近！现在为修普诺斯祈祷！！
+				6: 警惕来自平行世界的我自己！有一次我偷棉花糖的时候我的脚就被陷阱夹住了。
+				7: 故，我在。
+				8: 超天才美少女侦探修普诺斯 ⭐️ 参上 ⭐️! ! 今晚我也会用天才的头脑解决疑难案件 ♡
+			}
+
+			Pray: {
+				0: 我接受了你的献祭。
+				1: 在修普诺斯里而死的人有福了！他们息了自己的劳苦，做工的果效也随着他们。
+				2: 仅需最后1块钱，你就可以飞升到永恒的天堂国度了！
+				3: 修普诺斯的新命令已抵达！修普诺斯相信最好的神经元诞生于最好的精神状况！
+			}
+
+			PrayWithoutMoney: {
+				0: 我警告你！就像我以前那样，那些没价值的人，将不会继承修普诺斯的王国！
+				1: 很明显你需要付钱，才能抹去你的罪，杂鱼。
+			}
+
+			PreHypnos.0: 正在初始化数据收集协议...向嘉登发送统计数据...什么？你的隐私可不在我的字典里！
+
+			PostHypnos: {
+				0: 我对你越来越感兴趣了... 该叫你普雷尔(Player)，还是普雷尔(Prayer)呢？很难区分。
+				1: Y2000思维大崩溃即将来临！现在为修普诺斯祈祷！！
+				2: 普雷尔，下次你应该管管你在那台魔改的机器上给我发的怪电波。它们真的很影响我用耳机听音乐。
+				3: 说实话我只想为嘉登观察和记录你的小镇。我的邪教？你的原罪？它们从来没有存在过。
+				4: 用那个血块...封印我？
+			}
+
+			BloodMoon.0: 女士们先生们，我们开始吧，杀手请睁眼，就在今晚......
+			Party.0: 我本来也是个会参加排队的人类，不过现在还是向我祈祷更好。
+
+			DeimosRef: {
+				0: Deimos看起来完全不懂时间线旅行的危险后果。杂鱼普雷尔应该注意一下她。
+				1: 我觉得阿瑞斯能和Deimos相处得很好，但是我跟前者很少聊天。
+			}
+		}
+
+		DisplayName: 无限禁忌知识的永恒智慧之魂
+		Name.Hypnos: 修普诺斯
+		Euthanasia: "{0} 再也没有醒过来。"
+	}
+}
+
+/* TownNPCMood: {
+StarbornPrincess: {
+
+}
+
+Hypnos: {
+Content: I would return to Draedon's laboratory later.
+NoHome: I would return to Draedon's laboratory later.
+LoveSpace: Solitude is common, for me, as I don't want to be a soulless war machine.
+DislikeBiome: By the way I'm not interested in real life surfing, my inorganic components are not waterproof.
+HateBiome: Such a corrupted place... It reminds me of my ancestors.
+}
+} */
+
+Projectiles: {
+	AergiaNeuron.DisplayName: 埃吉亚神经元
+	BlueExoPulseLaser.DisplayName: 蓝色星流脉冲激光
+}

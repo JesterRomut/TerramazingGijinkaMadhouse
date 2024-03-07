@@ -1,0 +1,7 @@
+Calamitymod is not necessarily required.
+
+Added a chibii Hypnos as a town NPC.
+
+She randomly appears in your post-Moon Lord town, like a traveling merchant.
+She does not offer shop, instead, there is a "Pray" option available.
+You 

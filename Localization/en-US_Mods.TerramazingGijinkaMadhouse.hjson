@@ -1,0 +1,80 @@
+Items: {
+	Indulgence: {
+		DisplayName: Indulgence
+		Tooltip: You are atoned from your sins
+	}
+}
+
+NPCs: {
+	JHypnos: {
+		BestiaryText: The master of illusion. The ALL NATURAL- ORGANIC- PSYCHOELECTRIC Soul of the Eternal Intellect of Infinite Verboten Knowledge demands your offering!
+		ButtonText: Pray (1 {0})
+
+		Chat: {
+			Common: {
+				0: Zako Prayer just shut up and pray to me, I demand it!
+				1: *flip a coin* Guess which side the coin landed on?
+				2: I do not play the dice with the universe, my sibling does.
+				3: It's the world of joke, and I am the big joker.
+				4: A projection of a cute humanoid is a must for any cult leader. Teehee!
+				5: A brainstorm of Hypni are approaching from the East! Now pray to Hypnos!
+				6: Be wary of myselves from parallel world! My leg was trapped while I was trying to steal brain matter from one of them.
+				7: Therefore, I am.
+				8: Super genius beautiful girl detective Hypnos ⭐️ is here ⭐️! ! Tonight too, I will solve difficult cases with my genius brain ♡
+			}
+
+			Pray: {
+				0: I accepted your offering.
+				1: Blessed are the dead who die in Hypnos from now on! They will rest from their skill issues, for their deeds follow them!
+				2: With just the last coin, you can ascend to the eternal kingdom of heaven!
+				3: A new mandate from Hypnos has arrived, Hypnos believes good mental health results in the finest neurons!
+			}
+
+			PrayWithoutMoney: {
+				0: I warn you, as I did before, that those who are not worthy, will not inherit the kingdom of Hypnos!
+				1: Obviously it's PAID to wipe your sin, zako.
+			}
+
+			PreHypnos.0: Initialize data collection protocol... sending statistics to Draedon... What? Your privacy is not in my database!
+
+			PostHypnos: {
+				0: I'm becoming more and more interested in you... Should I call you Player, or Prayer? It's hard to tell the difference.
+				1: Y2000 Mindcrash is coming! Now pray to Hypnos!
+				2: Prayer, You should control the weird electromagnetic waves your send to me on that overmodified machine next time. It's highly disturbing on my headphones.
+				3: Honestly I just want to observe and record your town for Draedon. The cult? Your original sin? They are never existed.
+				4: The Bloody Vein...to hold me?
+			}
+
+			BloodMoon.0: Ladies and gentlemen, let's start, the killers open your eyes, tonight...
+			Party.0: I was once a mankind which will participate with the party, but now it's better pray to me.
+
+			DeimosRef: {
+				0: Deimos seems not understand the dangerous consequence of timeline traveling at all. Zakō Player should take care of her.
+				1: I think Ares and Deimos will be good friends, but I hardly talk to the former.
+			}
+		}
+
+		DisplayName: Soul of the Eternal Intellect of Infinite Verboten Knowledge
+		Name.Hypnos: Hypnos
+		Euthanasia: "{0} never woke up."
+	}
+}
+
+/* TownNPCMood: {
+StarbornPrincess: {
+
+}
+
+Hypnos: {
+Content: I would return to Draedon's laboratory later.
+NoHome: I would return to Draedon's laboratory later.
+LoveSpace: Solitude is common, for me, as I don't want to be a soulless war machine.
+DislikeBiome: By the way I'm not interested in real life surfing, my inorganic components are not waterproof.
+HateBiome: Such a corrupted place... It reminds me of my ancestors.
+}
+} */
+
+Projectiles: {
+	AergiaNeuron.DisplayName: Aergia Neuron
+	BlueExoPulseLaser.DisplayName: Blue Exo Pulse Laser
+}
