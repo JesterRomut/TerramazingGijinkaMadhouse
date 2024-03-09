@@ -18,9 +18,8 @@ using CalamityMod.Items.Pets;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.Items.Weapons.Magic;
 using CalamityMod.Items.Placeables.Ores;
-using TerramazingGijinkaMadhouse;
 
-namespace TerramazingGijinkaMadhouse.Items
+namespace TerramazingGijinkaMadhouse.Content.Items
 {
 
     internal static partial class CalamityWeakRef

@@ -3,11 +3,29 @@ Items: {
 		DisplayName: 赎罪券
 		Tooltip: 你已经免除了你的罪
 	}
+
+	AergiaCallerLight: {
+		DisplayName: 重建的神经元 <类型: LIGHT>
+		Tooltip:
+			'''
+			召唤最可爱的监视者
+			右键切换类型
+			'''
+	}
+
+	AergiaCallerVanity: {
+		DisplayName: 重建的神经元 <类型: VANITY>
+		Tooltip:
+			'''
+			召唤最可爱的监视者
+			右键切换类型
+			'''
+	}
 }
 
 NPCs: {
 	JHypnos: {
-		BestiaryText: 幻觉干扰大师，全天然·有机·高精电波无限禁忌知识的永恒智慧之魂正等待你的供奉。
+		BestiaryText: 向修普诺斯祈祷吧，这是它的要求。
 		ButtonText: 祈祷 (1 {0})
 
 		Chat: {
@@ -46,7 +64,7 @@ NPCs: {
 			}
 
 			BloodMoon.0: 女士们先生们，我们开始吧，杀手请睁眼，就在今晚......
-			Party.0: 我本来也是个会参加排队的人类，不过现在还是向我祈祷更好。
+			Party.0: 我本来也是个会参加派对的人类，不过现在还是向我祈祷更好。
 
 			DeimosRef: {
 				0: Deimos看起来完全不懂时间线旅行的危险后果。杂鱼普雷尔应该注意一下她。
@@ -56,7 +74,7 @@ NPCs: {
 
 		DisplayName: 无限禁忌知识的永恒智慧之魂
 		Name.Hypnos: 修普诺斯
-		Euthanasia: "{0} 再也没有醒过来。"
+		Euthanasia: "{0} 被送去了天堂，再也没有醒过来。"
 	}
 }
 
@@ -77,4 +95,23 @@ HateBiome: Such a corrupted place... It reminds me of my ancestors.
 Projectiles: {
 	AergiaNeuron.DisplayName: 埃吉亚神经元
 	BlueExoPulseLaser.DisplayName: 蓝色星流脉冲激光
+	AergiaNeuronPetLight.DisplayName: 埃吉亚神经元
+	AergiaNeuronPetVanity.DisplayName: 埃吉亚神经元
+}
+
+Buffs: {
+	Blessed: {
+		DisplayName: 祝福
+		Description: 你已从邪恶中被救赎
+	}
+
+	AergiaNeuronMonitoringLight: {
+		DisplayName: 埃吉亚神经酱
+		Description: 正在分析你的鼠标指针
+	}
+
+	AergiaNeuronMonitoringVanity: {
+		DisplayName: 埃吉亚神经酱
+		Description: 正在分析你的鼠标指针
+	}
 }

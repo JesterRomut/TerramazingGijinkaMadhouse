@@ -87,13 +87,13 @@ namespace TerramazingGijinkaMadhouse
 
         public static Color ColorSwap(Color firstColor, Color secondColor, float seconds)
         {
-            float colorMePurple = (float)((Math.Sin((double)((float)Math.PI * 2f / seconds) * (double)Main.GlobalTimeWrappedHourly) + 1.0) * 0.5);
+            float colorMePurple = (float)((Math.Sin((double)((float)Math.PI * 2f / seconds) * Main.GlobalTimeWrappedHourly) + 1.0) * 0.5);
             return Color.Lerp(firstColor, secondColor, colorMePurple);
         }
 
         public static Color ColorSwap(Color firstColor, Color secondColor, Color thirdColor, float seconds)
         { // 0 < colormepurple < 1
-            float colorMePurple = (float)((Math.Sin((double)((float)Math.PI * 2f / seconds) * (double)Main.GlobalTimeWrappedHourly) + 1.0) * 0.5);
+            float colorMePurple = (float)((Math.Sin((double)((float)Math.PI * 2f / seconds) * Main.GlobalTimeWrappedHourly) + 1.0) * 0.5);
             //ModContent.GetInstance<EverquartzAdventureMod>().Logger.Info(colorMePurple);
             if (colorMePurple < 0.33f)
             {
@@ -112,13 +112,13 @@ namespace TerramazingGijinkaMadhouse
 
         public static Color ColorSwap(List<Color> colors, float seconds)
         {
-            float colorMePurple = (float)((Math.Sin((double)((float)Math.PI * 2f / seconds) * (double)Main.GlobalTimeWrappedHourly) + 1.0) * 0.5);
+            float colorMePurple = (float)((Math.Sin((double)((float)Math.PI * 2f / seconds) * Main.GlobalTimeWrappedHourly) + 1.0) * 0.5);
             //ModContent.GetInstance<EverquartzAdventureMod>().Logger.Info(colorMePurple);
             int count = colors.Count();
 
             for (int i = 1; i <= count; i++)
             {
-                double level = (double)i / (double)count;
+                double level = i / (double)count;
                 //EverquartzAdventureMod.Instance.Logger.Info($"{i} {count} {level} {(double)(i - 1) / count}");
                 if (colorMePurple < level)
                 {

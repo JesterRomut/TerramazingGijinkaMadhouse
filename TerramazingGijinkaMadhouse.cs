@@ -5,13 +5,12 @@ using Terraria;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Terraria.ID;
-using TerramazingGijinkaMadhouse.NPCs;
 using System;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
-using TerramazingGijinkaMadhouse.NPCs.Hypnos;
 using System.Collections;
-using TerramazingGijinkaMadhouse.Items;
+using TerramazingGijinkaMadhouse.Content.NPCs.Hypnos;
+using CalamityMod;
 
 namespace TerramazingGijinkaMadhouse
 {
@@ -36,11 +35,11 @@ namespace TerramazingGijinkaMadhouse
 
 		public override void HandlePacket(BinaryReader reader, int whoAmI)
 		{
-			EverquartzMessageType msgType = (EverquartzMessageType)reader.ReadByte();
+			MadhouseMessageType msgType = (MadhouseMessageType)reader.ReadByte();
 			switch (msgType)
 			{
-				case EverquartzMessageType.HypnosReward:
-					Player priest = Main.player[reader.ReadInt32()];
+				case MadhouseMessageType.HypnosReward:
+					Player prayer = Main.player[reader.ReadInt32()];
 					byte[] byteArray = reader.ReadBytes((MadhouseUtils.EnumCount<HypnosReward>() - 1) / 8 + 1);
 					BitArray bitArray = new BitArray(byteArray);
 					List<HypnosReward> rewards = new List<HypnosReward>();
@@ -51,16 +50,16 @@ namespace TerramazingGijinkaMadhouse
 							rewards.Add((HypnosReward)i);
 						}
 					}
-					NPCs.Hypnos.JHypnos.HandleRewardsServer(priest, rewards);
+					JHypnos.HandleRewardsServer(prayer, rewards);
 					break;
-				case EverquartzMessageType.HypnoCoinAdd:
-					NPCs.Hypnos.JHypnos.HandleHypnoCoinAddServer();
+				case MadhouseMessageType.HypnoCoinAdd:
+					JHypnos.HandleHypnoCoinAddServer();
 					break;
-				case EverquartzMessageType.HypnosDeparted:
-					NPC hypnos = NPCs.Hypnos.JHypnos.Instance;
+				case MadhouseMessageType.HypnosDeparted:
+					NPC hypnos = JHypnos.Instance;
 					if (hypnos != null)
 					{
-						NPCs.Hypnos.JHypnos.HandleDepartHypnosUniversal(hypnos);
+						JHypnos.HandleDepartHypnosUniversal(hypnos);
 					}
 					break;
 					//case EverquartzMessageType.EverquartzSyncPlayer:
@@ -131,13 +130,13 @@ namespace TerramazingGijinkaMadhouse
 			}
 			switch (argStr)
 			{
-			//	case "Transmogrification":
-			//	case "AddTransmogrification":
-			//	case "AddTrans":
-			//	case "RegisterTransmogrification":
-			//	case "RegisterTrans":
-			//		TransmogrificationManager.AddFromModCall(args.Skip(1));
-			//		return null;
+				//	case "Transmogrification":
+				//	case "AddTransmogrification":
+				//	case "AddTrans":
+				//	case "RegisterTransmogrification":
+				//	case "RegisterTrans":
+				//		TransmogrificationManager.AddFromModCall(args.Skip(1));
+				//		return null;
 				default:
 					return null;
 			}
@@ -161,26 +160,26 @@ namespace TerramazingGijinkaMadhouse
 
 		public override void OnWorldLoad()
 		{
-			NPCs.Hypnos.JHypnos.hypnoCoins = 0;
-			NPCs.Hypnos.JHypnos.timePassed = 0;
-			NPCs.Hypnos.JHypnos.spawnTime = Double.MaxValue;
+			JHypnos.hypnoCoins = 0;
+			JHypnos.timePassed = 0;
+			JHypnos.spawnTime = Double.MaxValue;
 		}
 		public override void LoadWorldData(TagCompound tag)
 		{
-			NPCs.Hypnos.JHypnos.Load(tag.GetCompound("hypnos"));
+			JHypnos.Load(tag.GetCompound("hypnos"));
 		}
 		public override void SaveWorldData(TagCompound tag)
 		{
-			tag.Add("hypnos", NPCs.Hypnos.JHypnos.Save());
+			tag.Add("hypnos", JHypnos.Save());
 		}
 
 		public override void PreUpdateWorld()
 		{
-			NPCs.Hypnos.JHypnos.UpdateTravelingMerchant();
+			JHypnos.UpdateTravelingMerchant();
 		}
 
 		public static List<int> UniqueNPCs => new List<int>() {
-			ModContent.NPCType<NPCs.Hypnos.JHypnos>(),
+			ModContent.NPCType<JHypnos>(),
 		};
 
 		public override void PreUpdateNPCs()
@@ -203,7 +202,7 @@ namespace TerramazingGijinkaMadhouse
 
 
 
-	public enum EverquartzMessageType
+	public enum MadhouseMessageType
 	{
 		HypnosReward, // id, player.whoAmI, rewards(bytes)
 		HypnoCoinAdd, // id
@@ -242,7 +241,13 @@ namespace TerramazingGijinkaMadhouse
 	[JITWhenModsEnabled("CalamityMod")]
 	internal static partial class CalamityWeakRef
 	{
+		public static void AddAbyssLightInAbyss(Player p, int add)
+		{
 
+			ModCalls.AddAbyssLightStrength(p, add);
+
+
+		}
 	}
 
 	[JITWhenModsEnabled("Hypnos")]

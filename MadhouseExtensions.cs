@@ -12,6 +12,8 @@ using Terraria.ModLoader.IO;
 using System.Collections;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using TerramazingGijinkaMadhouse.Common;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace TerramazingGijinkaMadhouse
 {
@@ -77,7 +79,7 @@ namespace TerramazingGijinkaMadhouse
         {
             NPC target = null;
             float distance = maxDistance;
-            bool checkNPCInSight(NPC npc) => npc != null && npc.active && Vector2.Distance(position, npc.Center) < distance + ((float)(npc.width / 2) + (float)(npc.height / 2));
+            bool checkNPCInSight(NPC npc) => npc != null && npc.active && Vector2.Distance(position, npc.Center) < distance + (npc.width / 2 + (float)(npc.height / 2));
             foreach (NPC npc in Main.npc)
             {
                 if (checkNPCInSight(npc) && (predicate == null ? predicate(npc) : true))
@@ -219,7 +221,7 @@ namespace TerramazingGijinkaMadhouse
             return target;
         }
 
-        public static bool CheckNPCInSight(this Vector2 position, NPC npc, float distance) => npc != null && npc.active && npc.CanBeChasedBy() && npc.chaseable && Vector2.Distance(position, npc.Center) < distance + ((float)(npc.width / 2) + (float)(npc.height / 2));
+        public static bool CheckNPCInSight(this Vector2 position, NPC npc, float distance) => npc != null && npc.active && npc.CanBeChasedBy() && npc.chaseable && Vector2.Distance(position, npc.Center) < distance + (npc.width / 2 + (float)(npc.height / 2));
         //public static NPC NearestEnemyPreferNoMindcrashed(this Vector2 position, float maxDistance)
         //{
 
@@ -334,20 +336,26 @@ namespace TerramazingGijinkaMadhouse
             return player.GetModPlayer<MadhousePlayer>();
         }
 
-        //internal static EverquartzItem ModItem(this Item item)
-        //{
-        //    try
-        //    {
-        //        return (EverquartzItem)item.ModItem;
-        //    }
-        //    catch (InvalidCastException)
-        //    {
-        //        return null;
-        //    }
+		internal static void SetBlendState(this SpriteBatch spriteBatch, BlendState blendState)
+		{
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Immediate, blendState, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+		}
+
+		//internal static EverquartzItem ModItem(this Item item)
+		//{
+		//    try
+		//    {
+		//        return (EverquartzItem)item.ModItem;
+		//    }
+		//    catch (InvalidCastException)
+		//    {
+		//        return null;
+		//    }
 
 
-        //}
+		//}
 
-    }
+	}
 
 }

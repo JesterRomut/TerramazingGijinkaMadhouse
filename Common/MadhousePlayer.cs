@@ -4,14 +4,11 @@ using Terraria;
 using Terraria.ID;
 using System;
 using static Terraria.Player;
-using TerramazingGijinkaMadhouse.NPCs.Hypnos;
 using System.Collections;
-using Microsoft.Xna.Framework;
-using Terraria.Localization;
-using TerramazingGijinkaMadhouse;
-using TerramazingGijinkaMadhouse.Projectiles.Hypnos;
+using TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos;
+using TerramazingGijinkaMadhouse.Content.NPCs.Hypnos;
 
-namespace TerramazingGijinkaMadhouse
+namespace TerramazingGijinkaMadhouse.Common
 {
     public class MadhousePlayer : ModPlayer
     {
@@ -62,40 +59,50 @@ namespace TerramazingGijinkaMadhouse
 
         private void ResetBuffs()
         {
-
+            blessed = false;
         }
 
-        //public override void ModifyHitByNPC(NPC npc, ref int damage, ref bool crit)
-        //{
-        //    if (npc.Everquartz().mindcrashed > 0)
-        //    {
-        //        damage -= (int)Math.Floor(damage * 0.1);
-        //    }
-        //}
+		public override void ModifyLuck(ref float luck)
+		{
+			base.ModifyLuck(ref luck);
 
-        //public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)/* tModPorter If you don't need the Item, consider using ModifyHitNPC instead */
-        //{
-        //    if (target.Everquartz().mindcrashed > 0)
-        //    {
-        //        modifiers.FinalDamage.Base += Player.GetWeaponDamage(item) / 2;
-        //        //var debug = Player.GetWeaponDamage(item);
-        //        //modifiers.SetCrit();
-        //    }
-        //}
+            if (blessed) luck += 0.5f;
+		}
 
-        //public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)/* tModPorter If you don't need the Projectile, consider using ModifyHitNPC instead */
-        //{
-        //    if (target.Everquartz().mindcrashed > 0)
-        //    {
-        //        modifiers.FinalDamage.Base += proj.damage / 2;
-        //    }
-        //}
+		//public override void ModifyHitByNPC(NPC npc, ref int damage, ref bool crit)
+		//{
+		//    if (npc.Everquartz().mindcrashed > 0)
+		//    {
+		//        damage -= (int)Math.Floor(damage * 0.1);
+		//    }
+		//}
+
+		//public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)/* tModPorter If you don't need the Item, consider using ModifyHitNPC instead */
+		//{
+		//    if (target.Everquartz().mindcrashed > 0)
+		//    {
+		//        modifiers.FinalDamage.Base += Player.GetWeaponDamage(item) / 2;
+		//        //var debug = Player.GetWeaponDamage(item);
+		//        //modifiers.SetCrit();
+		//    }
+		//}
+
+		//public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)/* tModPorter If you don't need the Projectile, consider using ModifyHitNPC instead */
+		//{
+		//    if (target.Everquartz().mindcrashed > 0)
+		//    {
+		//        modifiers.FinalDamage.Base += proj.damage / 2;
+		//    }
+		//}
 
 
-        #region Hypnos
+		#region Hypnos
 
-        public int praisingTimer = 0;
+		public int praisingTimer = 0;
         public bool IsPraisingHypnos => praisingTimer > 0;
+
+        public bool blessed = false;
+
         public void InterruptPraisingHypnos()
         {
             praisingTimer = 0;
@@ -120,22 +127,22 @@ namespace TerramazingGijinkaMadhouse
         public void DonePraisingHypnos()
         {
             //client side
-            NPC hypnos = NPCs.Hypnos.JHypnos.Instance;
+            NPC hypnos = JHypnos.Instance;
             AergiaNeuron.AddElectricDusts(hypnos != null ? hypnos : Player);
 
-            List<HypnosReward> rewards = NPCs.Hypnos.JHypnos.GenerateRewards();
+            List<HypnosReward> rewards = JHypnos.GenerateRewards();
 
 
             if (Main.netMode == NetmodeID.SinglePlayer)
             {
-                NPCs.Hypnos.JHypnos.HandleRewardsServer(Player, rewards);
+                JHypnos.HandleRewardsServer(Player, rewards);
             }
             else
             {
                 int rewardCount = MadhouseUtils.EnumCount<HypnosReward>();
                 //this.Mod.Logger.Info(rewards);
                 ModPacket packet = Mod.GetPacket();
-                packet.Write((byte)EverquartzMessageType.HypnosReward);
+                packet.Write((byte)MadhouseMessageType.HypnosReward);
                 packet.Write(Player.whoAmI);
                 bool[] rewardBools = new bool[rewardCount];
                 rewards.ForEach(reward => rewardBools[(int)reward] = true);

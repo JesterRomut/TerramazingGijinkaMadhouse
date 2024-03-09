@@ -3,11 +3,29 @@ Items: {
 		DisplayName: Indulgence
 		Tooltip: You are atoned from your sins
 	}
+
+	AergiaCallerLight: {
+		DisplayName: Reconstructed Neuron <Type: LIGHT>
+		Tooltip:
+			'''
+			Summons the cutest surveiller
+			Right click toggles the type
+			'''
+	}
+
+	AergiaCallerVanity: {
+		DisplayName: Reconstructed Neuron <Type: VANITY>
+		Tooltip:
+			'''
+			Summons the cutest surveiller
+			Right click toggles the type
+			'''
+	}
 }
 
 NPCs: {
 	JHypnos: {
-		BestiaryText: The master of illusion. The ALL NATURAL- ORGANIC- PSYCHOELECTRIC Soul of the Eternal Intellect of Infinite Verboten Knowledge demands your offering!
+		BestiaryText: Pray to Hypnos, He demands it.
 		ButtonText: Pray (1 {0})
 
 		Chat: {
@@ -56,7 +74,7 @@ NPCs: {
 
 		DisplayName: Soul of the Eternal Intellect of Infinite Verboten Knowledge
 		Name.Hypnos: Hypnos
-		Euthanasia: "{0} never woke up."
+		Euthanasia: "{0} was sent to the heaven, thus never woke up."
 	}
 }
 
@@ -77,4 +95,23 @@ HateBiome: Such a corrupted place... It reminds me of my ancestors.
 Projectiles: {
 	AergiaNeuron.DisplayName: Aergia Neuron
 	BlueExoPulseLaser.DisplayName: Blue Exo Pulse Laser
+	AergiaNeuronPetLight.DisplayName: Aergia Neuron
+	AergiaNeuronPetVanity.DisplayName: Aergia Neuron
+}
+
+Buffs: {
+	Blessed: {
+		DisplayName: Blessed
+		Description: You are delivered from evil
+	}
+
+	AergiaNeuronMonitoringLight: {
+		DisplayName: Aergia Neurchan
+		Description: Is analyzing your cursor
+	}
+
+	AergiaNeuronMonitoringVanity: {
+		DisplayName: Aergia Neurchan
+		Description: Is analyzing your cursor
+	}
 }

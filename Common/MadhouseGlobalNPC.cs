@@ -1,4 +1,3 @@
-using TerramazingGijinkaMadhouse.NPCs;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System;
@@ -8,26 +7,11 @@ using Microsoft.Xna.Framework;
 using Terraria.GameContent;
 using System.Linq;
 using CalamityMod;
+using TerramazingGijinkaMadhouse.Content.NPCs.Hypnos;
 
-namespace TerramazingGijinkaMadhouse
+namespace TerramazingGijinkaMadhouse.Common
 {
-    internal static partial class CalamityWeakRef
-    {
-        //internal static void RemoveDR(NPC npc)
-        //{
-            
-        //    npc.Calamity().DR = 0;
-        //}
-        //internal static void Test(NPC npc)
-        //{
-        //    CombatText.NewText(npc.Hitbox, Color.White, npc.Calamity().DR.ToString());
-        //}
-    }
-}
 
-namespace TerramazingGijinkaMadhouse.NPCs
-{
-    
     public class MadhouseGlobalNPC : GlobalNPC
     {
         
@@ -157,8 +141,8 @@ namespace TerramazingGijinkaMadhouse.NPCs
         {
             if (npc.boss && ModCompatibility.hypnosEnabled && ModCompatibility.HypnosBossType.HasValue && npc.type == ModCompatibility.HypnosBossType.Value)
             {
-                int hypNpcType = ModContent.NPCType<NPCs.Hypnos.JHypnos>();
-                Main.npc.Where(npc2 => npc2.active && npc2.type == hypNpcType).ToList().ForEach(hypno => ((NPCs.Hypnos.JHypnos)hypno.ModNPC).KillWithCoins());
+                int hypNpcType = ModContent.NPCType<JHypnos>();
+                Main.npc.Where(npc2 => npc2.active && npc2.type == hypNpcType).ToList().ForEach(hypno => ((JHypnos)hypno.ModNPC).KillWithCoins());
             }
         }
     }

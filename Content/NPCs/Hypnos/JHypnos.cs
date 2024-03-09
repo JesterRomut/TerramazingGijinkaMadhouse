@@ -25,11 +25,12 @@ using static Terraria.ModLoader.PlayerDrawLayer;
 using System.Collections;
 using System.IO;
 using Terraria.ModLoader.IO;
-using TerramazingGijinkaMadhouse.Projectiles.Hypnos;
-using TerramazingGijinkaMadhouse;
 using CalamityMod.Items.Materials;
+using TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos;
+using TerramazingGijinkaMadhouse.Content.Buffs.Hypnos;
+using TerramazingGijinkaMadhouse.Content.Items;
 
-namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
+namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 {
     internal static partial class HypnosWeakRef
     {
@@ -42,18 +43,19 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
     {
         internal static bool downedExoMechs => DownedBossSystem.downedExoMechs;
 
-		internal static int ExoPrism => ModContent.ItemType<ExoPrism>();
+        internal static int ExoPrism => ModContent.ItemType<ExoPrism>();
 
-	}
+    }
 }
 
-namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
+namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 {
 
 
     public enum HypnosReward
     {
         Coins,
+        Blessing,
         ExoPrisms,
         Eucharist,
         Hypnotize,
@@ -61,19 +63,19 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
     }
 
     [AutoloadHead]
-    [LegacyName(new string[] { "HYPNO" })]
+    [LegacyName(new string[] { "HYPNO", "Hypnos" })]
     public class JHypnos : ModNPC
     {
         #region ExtraAssets
-        public static readonly SoundStyle IPutTheSoundFileInLocalBecauseICouldntKnowCalamitysPathOfThis = new SoundStyle("TerramazingGijinkaMadhouse/Sounds/ExoMechs/ExoLaserShoot"); 
-        public static readonly SoundStyle ICannotFindThisEither = new SoundStyle("TerramazingGijinkaMadhouse/Sounds/ExoMechs/ExoHit", 4)
+        public static readonly SoundStyle IPutTheSoundFileInLocalBecauseICouldntKnowCalamitysPathOfThis = new SoundStyle("TerramazingGijinkaMadhouse/Assets/Sounds/ExoMechs/ExoLaserShoot");
+        public static readonly SoundStyle ICannotFindThisEither = new SoundStyle("TerramazingGijinkaMadhouse/Assets/Sounds/ExoMechs/ExoHit", 4)
         {
             Volume = 0.4f
         };
 
 
-        public static readonly Asset<Texture2D> eyepatchTex = ModContent.Request<Texture2D>("TerramazingGijinkaMadhouse/NPCs/Hypnos/JHypnos_Eyepatch");
-        public static readonly Asset<Texture2D> glowTex = ModContent.Request<Texture2D>("TerramazingGijinkaMadhouse/NPCs/Hypnos/JHypnos_Glow");
+        public static readonly Asset<Texture2D> eyepatchTex = ModContent.Request<Texture2D>("TerramazingGijinkaMadhouse/Content/NPCs/Hypnos/JHypnos_Eyepatch");
+        public static readonly Asset<Texture2D> glowTex = ModContent.Request<Texture2D>("TerramazingGijinkaMadhouse/Content/NPCs/Hypnos/JHypnos_Glow");
 
         #endregion
 
@@ -90,12 +92,12 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
         public static string ChatPrayWithoutMoneyKey => "Mods.TerramazingGijinkaMadhouse.NPCs.JHypnos.Chat.PrayWithoutMoney";
 
         public static string EuthanasiaDeathReasonKey => "Mods.TerramazingGijinkaMadhouse.NPCs.JHypnos.Euthanasia";
-		//public static string ChatDeimosRefKey => "Mods.TerramazingGijinkaMadhouse.NPCs.Hypnos.Chat.DeimosRef";
-		#endregion LanguageKeys
+        //public static string ChatDeimosRefKey => "Mods.TerramazingGijinkaMadhouse.NPCs.Hypnos.Chat.DeimosRef";
+        #endregion LanguageKeys
 
-		#region Consts
-		public static readonly double despawnTime = 28000;
-        
+        #region Consts
+        public static readonly double despawnTime = 28000;
+
         #endregion
 
         #region ServerSideVariables
@@ -164,6 +166,26 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
                 case HypnosReward.Coins:
                     SpawnItem(ItemID.GoldCoin, Main.rand.Next(1, 3));
                     break;
+                case HypnosReward.Blessing:
+                    player.AddBuff(ModContent.BuffType<Blessed>(), int.MaxValue, false);
+                    SoundEngine.PlaySound(SoundID.Item4);
+					float burstDirectionVariance = 3f;
+					float burstSpeed = 6f;
+					for (int i = 0; i < 10; i++)
+					{
+						burstDirectionVariance += i * 2;
+						for (int j = 0; j < 40; j++)
+						{
+							Dust dust = Dust.NewDustPerfect(player.Center, 267, null, 0, default(Color), 1f);
+							dust.scale = Main.rand.NextFloat(1.74f, 2.5f);
+							dust.position += Main.rand.NextVector2Circular(10f, 10f);
+							dust.velocity = Main.rand.NextVector2Square(-burstDirectionVariance, burstDirectionVariance).SafeNormalize(Vector2.UnitY) * burstSpeed;
+							dust.color = Color.Lerp(Color.DarkViolet, Color.Black, Main.rand.NextFloat(0.6f));
+							dust.noGravity = true;
+						}
+						burstSpeed += 1.8f;
+					}
+					break;
                 case HypnosReward.ExoPrisms:
                     if (ModCompatibility.calamityEnabled)
                     {
@@ -225,7 +247,7 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
             ////                                                                                          ↑it's from hypnocord
             //NPCID.Sets.ActsLikeTownNPC[Type] = true;
             //NPCID.Sets.SpawnsWithCustomName[Type] = true;
-            Main.npcFrameCount[base.NPC.type] = 11;
+            Main.npcFrameCount[NPC.type] = 11;
 
             NPCID.Sets.TownNPCBestiaryPriority.Add(Type);
             NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers
@@ -270,7 +292,7 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
             NPC.knockBackResist = 0.5f;
             TownNPCStayingHomeless = true;
             NPC.trapImmune = true;
-            base.NPC.lavaImmune = true;
+            NPC.lavaImmune = true;
             //NPC.rarity = 2;//设置稀有度
             //AnimationType = npcID;
 
@@ -290,20 +312,20 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
             if (NPC.velocity.Y > 0)
             {
                 NPC.frame.Y = frameHeight;
-                base.NPC.frameCounter = 0;
+                NPC.frameCounter = 0;
                 return;
             }
             if (NPC.velocity.X == 0)
             {
                 NPC.frame.Y = 0;
-                base.NPC.frameCounter = 0;
+                NPC.frameCounter = 0;
             }
             else
             {
-                base.NPC.frameCounter += 0.25;
-                base.NPC.frameCounter %= Main.npcFrameCount[base.NPC.type] - 2;
-                int frame = (int)base.NPC.frameCounter;
-                base.NPC.frame.Y = (frame + 2) * frameHeight;
+                NPC.frameCounter += 0.25;
+                NPC.frameCounter %= Main.npcFrameCount[NPC.type] - 2;
+                int frame = (int)NPC.frameCounter;
+                NPC.frame.Y = (frame + 2) * frameHeight;
             }
 
 
@@ -345,7 +367,7 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
                 SoundEngine.PlaySound(NPC.DeathSound, NPC.position);
                 for (int num585 = 0; num585 < 25; num585++)
                 {
-                    int num586 = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Smoke, 0f, 0f, 100, default(Color), 2f);
+                    int num586 = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Smoke, 0f, 0f, 100, default, 2f);
                     Dust dust30 = Main.dust[num586];
                     Dust dust187 = dust30;
                     dust187.velocity *= 1.4f;
@@ -397,7 +419,7 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
             Vector2 position = NPC.Center - screenPos + new Vector2(3 + (NPC.spriteDirection == 1 ? -7 : 0), -9f);
             spriteBatch.Draw
             (
-                TextureAssets.Npc[base.NPC.type].Value,
+                TextureAssets.Npc[NPC.type].Value,
                 position,
                 NPC.frame,
                 drawColor,
@@ -438,8 +460,8 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
 
             if (Main.rand.NextBool(200))
             {
-                
-                if (NPC.homeTileX != -1 &&  NPC.homeTileY != -1)
+
+                if (NPC.homeTileX != -1 && NPC.homeTileY != -1)
                 {
                     Point homePoint = new Point(NPC.homeTileX, NPC.homeTileY - 3);
 
@@ -454,7 +476,7 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
 
                     }
                 }
-                
+
             }
 
             // massive linq
@@ -499,7 +521,7 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
 
         #endregion
 
-        #region Traveling
+        #region Travelling
         public static bool ShouldDespawn => timePassed >= despawnTime;
         public static void UpdateTravelingMerchant()
         {
@@ -518,7 +540,7 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
                 else if (Main.netMode == NetmodeID.Server)
                 {
                     ModPacket packet = TerramazingGijinkaMadhouseMod.Instance.GetPacket();
-                    packet.Write((byte)EverquartzMessageType.HypnosDeparted);
+                    packet.Write((byte)MadhouseMessageType.HypnosDeparted);
                     packet.Send();
                     ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[35].Key, fullName), new Color(50, 125, 255));
                 }
@@ -545,7 +567,7 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
                 // You can also add a day counter here to prevent the merchant from possibly spawning multiple days in a row.
 
                 // NPC won't spawn today if it stayed all night
-                if (hypnos == null && NPC.downedMoonlord && Main.rand.NextBool(5))
+                if (hypnos == null && NPC.downedMechBossAny && Main.rand.NextBool(5))
                 { // 4 = 25% Chance
                   // Here we can make it so the NPC doesnt spawn at the EXACT same time every time it does spawn
                     spawnTime = GetRandomSpawnTime(1, 54000); // minTime = 6:00am, maxTime = 7:30am
@@ -661,14 +683,14 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
             int num11 = bestX;
             int num12 = bestY;
             bool flag = false;
-            if (!flag && !((double)num12 > Main.worldSurface))
+            if (!flag && !(num12 > Main.worldSurface))
             {
                 //Rectangle value = default(Rectangle);
                 for (int m = 20; m < 500; m++)
                 {
                     for (int n = 0; n < 2; n++)
                     {
-                        num11 = ((n != 0) ? (bestX - m * 2) : (bestX + m * 2));
+                        num11 = n != 0 ? bestX - m * 2 : bestX + m * 2;
                         if (num11 > 10 && num11 < Main.maxTilesX - 10)
                         {
                             int num13 = bestY - m;
@@ -681,7 +703,7 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
                             {
                                 num2 = Main.worldSurface;
                             }
-                            for (int num3 = num13; (double)num3 < num2; num3++)
+                            for (int num3 = num13; num3 < num2; num3++)
                             {
                                 num12 = num3;
                                 if (!Main.tile[num11, num12].HasUnactuatedTile || !Main.tileSolid[Main.tile[num11, num12].TileType])
@@ -890,7 +912,7 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
             spriteBatch.Draw
             (
                 texture,
-                position ?? (NPC.Center - screenPos - new Vector2(0, 8f)),
+                position ?? NPC.Center - screenPos - new Vector2(0, 8f),
                 new Rectangle(0, 0, texture.Width, texture.Height),
                 drawColor ?? Color.White,
                 NPC.rotation,
@@ -932,7 +954,13 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
             {
                 rewards.Add(HypnosReward.Coins);
             }
-            if (Main.rand.NextBool(10) && ((ModCompatibility.calamityEnabled && CalamityWeakRef.downedExoMechs) || (ModCompatibility.hypnosEnabled && HypnosWeakRef.downedHypnos)))
+
+            if (Main.rand.NextBool(6))
+            {
+                rewards.Add(HypnosReward.Blessing);
+            }
+
+            if (Main.rand.NextBool(10) && (ModCompatibility.calamityEnabled && CalamityWeakRef.downedExoMechs || ModCompatibility.hypnosEnabled && HypnosWeakRef.downedHypnos))
             {
                 rewards.Add(HypnosReward.ExoPrisms);
             }
@@ -970,9 +998,9 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
 
         public void GetPrayInfo(Player player, out int targetDirection, out Vector2 playerPositionWhenPetting)
         {
-            targetDirection = ((NPC.Center.X > player.Center.X) ? 1 : (-1));
+            targetDirection = NPC.Center.X > player.Center.X ? 1 : -1;
             int num = 36;
-            playerPositionWhenPetting = NPC.Bottom + new Vector2((float)(-targetDirection * num), 0f);
+            playerPositionWhenPetting = NPC.Bottom + new Vector2(-targetDirection * num, 0f);
             playerPositionWhenPetting = playerPositionWhenPetting.Floor();
         }
         public void Pray(Player player)
@@ -998,7 +1026,7 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
                 else if (Main.netMode == NetmodeID.MultiplayerClient)
                 {
                     ModPacket packet = Mod.GetPacket();
-                    packet.Write((byte)EverquartzMessageType.HypnoCoinAdd);
+                    packet.Write((byte)MadhouseMessageType.HypnoCoinAdd);
                     packet.Send();
                 }
                 player.StopVanityActions();
@@ -1022,26 +1050,5 @@ namespace TerramazingGijinkaMadhouse.NPCs.Hypnos
 
     }
 
-    public class Indulgence : ModItem
-    {
-
-        public override void SetStaticDefaults()
-        {
-            // DisplayName.SetDefault("Indulgence");
-            //DisplayName.AddTranslation(7, "赎罪券");
-            //DisplayName.AddTranslation(6, "Снисхождение");
-
-            //// Tooltip.SetDefault("You are atoned from your sins");
-            //Tooltip.AddTranslation(7, "你已经免除了你的罪");
-            //Tooltip.AddTranslation(6, "Вы искуплены от своих грехов");
-        }
-        public override void SetDefaults()
-        {
-            Item.width = 13;
-            Item.height = 23;
-            Item.value = 0;
-            Item.rare = ItemRarityID.Gray;
-            Item.maxStack = 9999;
-        }
-    }
+    
 }
