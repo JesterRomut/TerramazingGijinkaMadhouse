@@ -15,6 +15,7 @@ using Terraria.ID;
 using Terraria.Audio;
 using CalamityMod.Buffs.StatDebuffs;
 using TerramazingGijinkaMadhouse.Content.NPCs.Hypnos;
+using System.IO;
 
 namespace TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos
 {
@@ -38,8 +39,8 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos
 
         #region Consts
         public static readonly int laserTimer = 60;
-        public static readonly int refreshTimeLeft = 200;
-        public static readonly int alphaChange = 10;
+        public static readonly short refreshTimeLeft = 300;
+        public static readonly int alphaChange = 5;
         public static readonly int laserSpeed = 20;
         #endregion
 
@@ -67,22 +68,17 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos
         #endregion
 
         #region Fields
+
+        bool landed = false;
         public bool Landed
         {
             get
             {
-                return Projectile.ai[0] != 0;
+                return landed;
             }
             set
             {
-                if (value == true)
-                {
-                    Projectile.ai[0] = 1;
-                }
-                else
-                {
-                    Projectile.ai[0] = 0;
-                }
+                landed = value;
             }
         }
 
@@ -97,17 +93,26 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos
                 Projectile.ai[1] = value;
             }
         }
-        public int AergiaIndex => AllNeurons.IndexOf(Projectile);
 
+        int AergiaIndex { get {
 
-        #endregion
+                return (int)Projectile.ai[0];
 
-        #region Utils
-        public static List<Projectile> AllNeurons => Main.projectile.Where(proj => proj != null && proj.active && proj.owner == 0 && proj.type == ModContent.ProjectileType<AergiaNeuron>()).ToList();
+			}
+        }
+
+        short guaranteedLandedTime = 0;
+
+		short timeLeft = refreshTimeLeft;
+		#endregion
+
+		#region Utils
+		public static List<Projectile> AllNeurons => Main.projectile.Where(proj => proj != null && proj.active && proj.type == ModContent.ProjectileType<AergiaNeuron>()).ToList();
 
         public static int CalcDamage(NPC target) => (int)Math.Floor((float)target.lifeMax / (target.boss ? 96000 : 6));
         public static void AddElectricDusts(Entity proj, int count = 3) // hey hypons or whatever your name u coded quite a lot maybe it is time to stop that is not healthy for you, i can tell by myself
         {
+            if (Main.dedServ) return;
             for (int i = 0; i < count; i++)
             {
                 Dust.NewDust(proj.position, proj.width, proj.height, DustID.Electric);
@@ -137,15 +142,15 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos
             Projectile.aiStyle = -1;
             Projectile.tileCollide = false;
             Projectile.damage = 1;
-            Projectile.ai[0] = 0;
-            Projectile.ai[1] = 0;
-            Projectile.penetrate = -1;
+			Projectile.penetrate = -1;
             Projectile.netImportant = true;
             Projectile.npcProj = true;
             Projectile.DamageType = DamageClass.MagicSummonHybrid;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 0;
             Projectile.timeLeft = refreshTimeLeft;
+
+            timeLeft = refreshTimeLeft;
         }
 
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
@@ -164,13 +169,37 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos
 
             Vector2 origin = new Vector2(originOffsetX, Projectile.height / 2 - DrawOriginOffsetY);
 
+            Color color = Color.White;
+            color.A = (byte)(255 - Projectile.alpha);
 
-            Main.EntitySpriteDraw(sprite, Projectile.position - Main.screenPosition + new Vector2(originOffsetX + DrawOffsetX, Projectile.height / 2 + Projectile.gfxOffY), (Rectangle?)frame, Color.White, Projectile.rotation, origin, Projectile.scale, default, 0);
-        }
-        #endregion
+			Main.spriteBatch.SetBlendState(BlendState.NonPremultiplied);
 
-        #region AI
-        public override void AI()
+
+			Main.EntitySpriteDraw(sprite, Projectile.position - Main.screenPosition + new Vector2(originOffsetX + DrawOffsetX, Projectile.height / 2 + Projectile.gfxOffY), (Rectangle?)frame, color, Projectile.rotation, origin, Projectile.scale, default, 0);
+
+			Main.spriteBatch.SetBlendState(BlendState.AlphaBlend);
+		}
+
+		public override void SendExtraAI(BinaryWriter writer)
+		{
+            writer.Write(guaranteedLandedTime);
+            writer.Write(timeLeft);
+
+			base.SendExtraAI(writer);
+		}
+
+		public override void ReceiveExtraAI(BinaryReader reader)
+		{
+            guaranteedLandedTime = reader.ReadInt16();
+            timeLeft = reader.ReadInt16();
+
+			base.ReceiveExtraAI(reader);
+		}
+
+		#endregion
+
+		#region AI
+		public override void AI()
         {
             NPC hypnos = JHypnos.Instance;
 
@@ -180,7 +209,26 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos
                 return;
             }
 
-            int aergiaIndex = AergiaIndex;
+            //if (AergiaIndex == -1)
+            //{
+            if (AergiaIndex >= 12)
+            {
+                Projectile.Kill();
+                return;
+            }
+
+            if (--timeLeft <= 0)
+            {
+				Projectile.Kill();
+				return;
+			}
+
+			//    AergiaIndex = AllNeurons.Count;
+			//}
+			Projectile.timeLeft = 10;
+
+			int aergiaIndex = AergiaIndex;
+
             int neuronCount = 12;
             float offset = Main.GlobalTimeWrappedHourly * 80;
 
@@ -194,10 +242,14 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos
                 ((float)Math.PI * 2f * aergiaIndex / neuronCount + offset).ToRotationVector2() * (float)dist4 + hypnos.Center
                 );
 
-            if (dist < 20f && Landed == false)
+            if (Landed == false && (dist < 20f  || guaranteedLandedTime > 100))
             {
                 Landed = true;
                 AddElectricDusts();
+                Projectile.netUpdate = true;
+            }else if (guaranteedLandedTime <= 100)   
+            {
+                guaranteedLandedTime++;
             }
 
             float idealx8;
@@ -212,11 +264,15 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos
                 idealx8 = MathHelper.Lerp(Projectile.position.X, hyposx4, 0.8f);
                 idealy8 = MathHelper.Lerp(Projectile.position.Y, hyposy4, 0.8f);
 
+                //int targetin = -1;
+                //Projectile.Minion_FindTargetInRange(800, ref targetin, false);
+                //NPC target = Main.npc[targetin]; 
                 NPC target = Projectile.Center.NearestEnemy(800f);
-                if (target != null)
+                if (target != null && target.active)
                 {
-                    //CombatText.NewText(Projectile.Hitbox, Color.White, $"{target.FullName} {target.CanBeChasedBy()} {target.chaseable}");
-                    Projectile.timeLeft = refreshTimeLeft;
+					Projectile.netUpdate = true;
+					//CombatText.NewText(Projectile.Hitbox, Color.White, $"{target.FullName} {target.CanBeChasedBy()} {target.chaseable}");
+					timeLeft = refreshTimeLeft;
                     if (ShootCooldown > 0)
                     {
                         ShootCooldown--;
@@ -232,18 +288,12 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos
                     }
 
                 }
-                else
-                {
-                    if (Projectile.timeLeft > refreshTimeLeft)
-                    {
-                        Projectile.timeLeft = refreshTimeLeft;
-                    }
-                }
             }
 
-            Projectile.position = new Vector2(idealx8, idealy8);
+			
+			Projectile.position = new Vector2(idealx8, idealy8);
 
-            if (Projectile.timeLeft < 100)
+            if (timeLeft < 200)
             {
                 Projectile.alpha = Math.Min(Projectile.alpha + alphaChange, 255);
             }
@@ -257,7 +307,8 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos
 
             if (Projectile.alpha >= 255)
             {
-                Projectile.Kill();
+				Projectile.netUpdate = true;
+				Projectile.Kill();
                 return;
             }
 
@@ -265,12 +316,30 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos
 
 
         }
-        #endregion
+
+		public override bool PreKill(int timeLeft)
+		{
+
+			//JHypnos.neurons[AergiaIndex] = -1;
+   //         Projectile.netUpdate = true;
+
+			return base.PreKill(timeLeft);
+		}
+
+		public override void OnKill(int timeLeft)
+		{
+			JHypnos.neurons[AergiaIndex] = -1;
+			Projectile.netUpdate = true;
+
+			base.OnKill(timeLeft);
+
+		}
+		#endregion
 
 
 
 
-    }
+	}
 
     public class BlueExoPulseLaser : ModProjectile
     {
@@ -321,7 +390,7 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos
 
 
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             AergiaNeuron.AddElectricDusts(Projectile, 1);
         }
@@ -348,6 +417,8 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos
         #region AI
         public override void AI()
         {
+            
+
             Projectile.frameCounter++;
             if (Projectile.frameCounter > 6)
             {

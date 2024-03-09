@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria;
+using TerramazingGijinkaMadhouse.Content.Items.Hypnos;
 
 namespace TerramazingGijinkaMadhouse.Content.Items
 {
@@ -29,6 +30,8 @@ namespace TerramazingGijinkaMadhouse.Content.Items
 			Item.value = 0;
 			Item.rare = ItemRarityID.Gray;
 			Item.maxStack = 9999;
+			Item.ammo = Type;
+			Item.consumable = true;
 		}
 	}
 }

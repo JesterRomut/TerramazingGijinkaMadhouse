@@ -7,6 +7,8 @@ using static Terraria.Player;
 using System.Collections;
 using TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos;
 using TerramazingGijinkaMadhouse.Content.NPCs.Hypnos;
+using CalamityMod;
+using Microsoft.Xna.Framework;
 
 namespace TerramazingGijinkaMadhouse.Common
 {
@@ -128,9 +130,23 @@ namespace TerramazingGijinkaMadhouse.Common
         {
             //client side
             NPC hypnos = JHypnos.Instance;
-            AergiaNeuron.AddElectricDusts(hypnos != null ? hypnos : Player);
+            // AergiaNeuron.AddElectricDusts(hypnos != null ? hypnos : Player);
 
-            List<HypnosReward> rewards = JHypnos.GenerateRewards();
+            Vector2 pos = hypnos.Center;
+            pos.Y -= 14;
+            pos.X -= hypnos.direction * 2f;
+				float fadeIn = Main.rand.NextFloat(0.8f, 1.7f);
+				for (int i = 0; i < 60; i++)
+				{
+					Dust dust = Dust.NewDustPerfect(pos, 267);
+					dust.velocity = hypnos.velocity + ((float)Math.PI * 2f * (float)i / 60f + (float)Math.PI).ToRotationVector2() * 3;
+					dust.noGravity = true;
+					dust.color = Main.hslToRgb(Main.rand.NextFloat(), 0.7f, 0.625f);
+					dust.fadeIn = fadeIn;
+					dust.scale = 1.4f;
+				}
+
+			List<HypnosReward> rewards = JHypnos.GenerateRewards();
 
 
             if (Main.netMode == NetmodeID.SinglePlayer)

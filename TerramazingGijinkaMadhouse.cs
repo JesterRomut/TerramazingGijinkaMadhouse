@@ -14,9 +14,9 @@ using CalamityMod;
 
 namespace TerramazingGijinkaMadhouse
 {
-	public class TerramazingGijinkaMadhouseMod : Mod
+	public class TerramazingGijinkaMadhouse : Mod
 	{
-		public static TerramazingGijinkaMadhouseMod Instance { get; private set; }
+		public static TerramazingGijinkaMadhouse Instance { get; private set; }
 
 
 
@@ -38,7 +38,7 @@ namespace TerramazingGijinkaMadhouse
 			MadhouseMessageType msgType = (MadhouseMessageType)reader.ReadByte();
 			switch (msgType)
 			{
-				case MadhouseMessageType.HypnosReward:
+				case MadhouseMessageType.HypnosReward: // server
 					Player prayer = Main.player[reader.ReadInt32()];
 					byte[] byteArray = reader.ReadBytes((MadhouseUtils.EnumCount<HypnosReward>() - 1) / 8 + 1);
 					BitArray bitArray = new BitArray(byteArray);
@@ -61,6 +61,13 @@ namespace TerramazingGijinkaMadhouse
 					{
 						JHypnos.HandleDepartHypnosUniversal(hypnos);
 					}
+					break;
+				case MadhouseMessageType.HypnosBlessingReceived: // client
+					JHypnos.AddBlessingVisuals(Main.player[Main.myPlayer].Center);
+					break;
+				case MadhouseMessageType.HypnosArrived: // server
+					int player = reader.ReadInt32();
+					JHypnos.SpawnTravellingMerchant(player == -1? null : Main.player[player]);
 					break;
 					//case EverquartzMessageType.EverquartzSyncPlayer:
 					//    byte playernumber = reader.ReadByte();
@@ -204,10 +211,11 @@ namespace TerramazingGijinkaMadhouse
 
 	public enum MadhouseMessageType
 	{
-		HypnosReward, // id, player.whoAmI, rewards(bytes)
-		HypnoCoinAdd, // id
-		HypnosDeparted, // id
-						//EverquartzSyncPlayer // id, player.whoAmI (see EverquartzPlayer.SyncPlayer)
+		HypnosReward, // player.whoAmI, rewards(bytes)
+		HypnoCoinAdd, // 
+		HypnosDeparted, // 
+		HypnosBlessingReceived, // 
+		HypnosArrived // id, calledPlayer: int
 	}
 
 	public static class ModCompatibility

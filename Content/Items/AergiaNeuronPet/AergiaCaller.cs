@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using TerramazingGijinkaMadhouse.Content.Buffs.AergiaNeuronPet;
+using TerramazingGijinkaMadhouse.Content.NPCs.Hypnos;
 using TerramazingGijinkaMadhouse.Content.Projectiles.AergiaNeuronPet;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace TerramazingGijinkaMadhouse.Content.Items.AergiaNeuronPet
 {
@@ -37,11 +39,12 @@ namespace TerramazingGijinkaMadhouse.Content.Items.AergiaNeuronPet
 			Item.noMelee = true;
 			Item.width = 13;
 			Item.height = 23;
-			Item.UseSound = new SoundStyle?(SoundID.NPCHit9);
+			Item.UseSound = SoundID.NPCHit9;
 			Item.shoot = ProjectileType;
 			Item.buffType = BuffType;
 			Item.value = Item.buyPrice(0, 4, 0, 0);
 			Item.rare = ItemRarityID.Orange;
+			Item.consumable = false;
 		}
 
 		public override void UseStyle(Player player, Rectangle heldItemFrame)
@@ -55,8 +58,24 @@ namespace TerramazingGijinkaMadhouse.Content.Items.AergiaNeuronPet
 		public override void RightClick(Player player)
 		{
 			//if (player.HasBuff(BuffType)) return;
-			player.PutItemInInventoryFromItemUsage(RightClickTransform);
-			Item.TurnToAir();
+			//player.PutItemInInventoryFromItemUsage(RightClickTransform);
+			//Item.TurnToAir();
+
+			Item.SetDefaults(RightClickTransform);
+			//Item.stack = 1;
+
+			//Main.mouseItem.SetDefaults(RightClickTransform);
+			
+
+
+			//JHypnos.neurons = new int[12] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }; 
+			//JHypnos.Instance?.StrikeInstantKill();
+			//JHypnos.Instance.StrikeInstantKill();
+		}
+
+		public override bool ConsumeItem(Player player)
+		{
+			return false;
 		}
 
 		public override bool CanRightClick()

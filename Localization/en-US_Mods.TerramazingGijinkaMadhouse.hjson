@@ -21,6 +21,14 @@ Items: {
 			Right click toggles the type
 			'''
 	}
+
+	HypnosCaller: {
+		DisplayName: Religious broadcaster
+		Tooltip: '''
+		Requests the Soul of the Eternal Intellect of Infinite Verboten Knowledge's visit to your town
+		Needs Indulgence to work
+		'''
+	}
 }
 
 NPCs: {
@@ -77,6 +85,8 @@ NPCs: {
 		Euthanasia: "{0} was sent to the heaven, thus never woke up."
 	}
 }
+
+Annoucement.HasArrivedFromRequest: "{0} has arrived at {1}'s request!"
 
 /* TownNPCMood: {
 StarbornPrincess: {

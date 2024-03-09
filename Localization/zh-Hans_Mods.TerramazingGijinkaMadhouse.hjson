@@ -21,6 +21,14 @@ Items: {
 			右键切换类型
 			'''
 	}
+
+	HypnosCaller: {
+		DisplayName: 宗教广播器
+		Tooltip: '''
+		请求无限禁忌知识的永恒智慧之魂来拜访你的小镇
+		需要赎罪券来生效
+		'''
+	}
 }
 
 NPCs: {
@@ -77,6 +85,8 @@ NPCs: {
 		Euthanasia: "{0} 被送去了天堂，再也没有醒过来。"
 	}
 }
+
+Annoucement.HasArrivedFromRequest: "{0}在{1}的请求下已到达！"
 
 /* TownNPCMood: {
 StarbornPrincess: {

@@ -24,7 +24,7 @@ namespace TerramazingGijinkaMadhouse
                     }
                     if (!Main.tile[i, j].HasUnactuatedTile || !Main.tileSolid[Main.tile[i, j].TileType])
                     {
-                        Dust.NewDustPerfect(new Point(i, j).ToWorldCoordinates(), DustID.Water, Vector2.Zero);
+                        //Dust.NewDustPerfect(new Point(i, j).ToWorldCoordinates(), DustID.Water, Vector2.Zero);
                         return false;
                     }
                 }

@@ -14,6 +14,8 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using TerramazingGijinkaMadhouse.Common;
 using Microsoft.Xna.Framework.Graphics;
+using CalamityMod.NPCs.TownNPCs;
+using Terraria.DataStructures;
 
 namespace TerramazingGijinkaMadhouse
 {
@@ -340,6 +342,46 @@ namespace TerramazingGijinkaMadhouse
 		{
 			spriteBatch.End();
 			spriteBatch.Begin(SpriteSortMode.Immediate, blendState, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+		}
+
+		public static void PutItemInInventory(this Player player, int type, int theSelectedItem = -1)
+		{
+			for (int i = 0; i < 58; i++)
+			{
+				Item item = player.inventory[i];
+				if (item.stack > 0 && item.type == type && item.stack < item.maxStack)
+				{
+					item.stack++;
+					return;
+				}
+			}
+			if (theSelectedItem >= 0 && (player.inventory[theSelectedItem].type == ItemID.None || player.inventory[theSelectedItem].stack <= 0))
+			{
+				player.inventory[theSelectedItem].SetDefaults(type);
+				return;
+			}
+			Item item2 = new Item();
+			item2.SetDefaults(type);
+			if (player.GetItem(player.whoAmI, item2, GetItemSettings.ItemCreatedFromItemUsage).stack > 0)
+			{
+				Item item3 = item2;
+				if (theSelectedItem != -1)
+				{
+					item3 = player.inventory[theSelectedItem];
+				}
+				int number = Item.NewItem(new EntitySource_ItemUse(player, item3), (int)player.position.X, (int)player.position.Y, player.width, player.height, type, 1, noBroadcast: false, 0, noGrabDelay: true);
+				if (Main.netMode == NetmodeID.MultiplayerClient)
+				{
+					NetMessage.SendData(MessageID.SyncItem, -1, -1, null, number, 1f);
+				}
+			}
+			else
+			{
+				item2.position.X = player.Center.X - (float)(item2.width / 2);
+				item2.position.Y = player.Center.Y - (float)(item2.height / 2);
+				item2.active = true;
+				PopupText.NewText(PopupTextContext.RegularItemPickup, item2, 0);
+			}
 		}
 
 		//internal static EverquartzItem ModItem(this Item item)
