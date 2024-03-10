@@ -30,6 +30,7 @@ Chibii Hypnos will be killed if Hypnos(Boss) is present and killed, dropping all
 
 Source code: https://github.com/JesterRomut/TerramazingGijinkaMadhouse
 (It has reused a lot of old codes from 1yr ago, code readability is not guaranteed. ; ;)
+Bug reports are welcomed in Github and comment section.
 
 ---- ZH ----
 
@@ -65,3 +66,4 @@ Source code: https://github.com/JesterRomut/TerramazingGijinkaMadhouse
 
 源码: https://github.com/JesterRomut/TerramazingGijinkaMadhouse
 (复用了很多一年前的古老屎山代码，代码可读性堪忧 ; ;)
+欢迎在座各位在github和评论区报告bug。
