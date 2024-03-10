@@ -209,23 +209,35 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 		public static void AddBlessingVisuals(Vector2 position)
 		{
 			SoundEngine.PlaySound(SoundID.Item4);
-			float burstDirectionVariance = 3f;
-			float burstSpeed = 3f;
-			for (int i = 0; i < 10; i++)
+
+			float fadeIn = Main.rand.NextFloat(0.8f, 1.7f);
+			for (int i = 0; i < 60; i++)
 			{
-				burstDirectionVariance += i * 2;
-				for (int j = 0; j < 40; j++)
-				{
-					Dust dust = Dust.NewDustPerfect(position, 267, null, 0, default(Color), 1f);
-					dust.scale = Main.rand.NextFloat(1f, 1.4f);
-					dust.position += Main.rand.NextVector2Circular(10f, 10f);
-					dust.velocity = Main.rand.NextVector2Square(-burstDirectionVariance, burstDirectionVariance).SafeNormalize(Vector2.UnitY) * burstSpeed;
-					dust.color = Color.Lerp(Color.DarkViolet, Color.Black, Main.rand.NextFloat(1f));
-					//dust.color = Main.hslToRgb(Main.rand.NextFloat(), 0.7f, 0.625f);
-					dust.noGravity = true;
-				}
-				burstSpeed += 1.8f;
+				Dust dust = Dust.NewDustPerfect(position, 267);
+				dust.velocity = ((float)Math.PI * 2f * (float)i / 60f + (float)Math.PI).ToRotationVector2() * 3;
+				dust.noGravity = true;
+				dust.color = Main.hslToRgb(Main.rand.NextFloat(), 0.7f, 0.6f);
+				dust.fadeIn = fadeIn;
+				dust.alpha = 200;
+				dust.scale = 1.4f;
 			}
+			//float burstDirectionVariance = 3f;
+			//float burstSpeed = 3f;
+			//for (int i = 0; i < 10; i++)
+			//{
+			//	burstDirectionVariance += i * 2;
+			//	for (int j = 0; j < 40; j++)
+			//	{
+			//		Dust dust = Dust.NewDustPerfect(position, 267, null, 0, default(Color), 1f);
+			//		dust.scale = Main.rand.NextFloat(1f, 1.4f);
+			//		dust.position += Main.rand.NextVector2Circular(10f, 10f);
+			//		dust.velocity = Main.rand.NextVector2Square(-burstDirectionVariance, burstDirectionVariance).SafeNormalize(Vector2.UnitY) * burstSpeed;
+			//		dust.color = Color.Lerp(Color.DarkViolet, Color.Black, Main.rand.NextFloat(1f));
+			//		//dust.color = Main.hslToRgb(Main.rand.NextFloat(), 0.7f, 0.625f);
+			//		dust.noGravity = true;
+			//	}
+			//	burstSpeed += 1.8f;
+			//}
 		}
 
 		public static void HandleRewardServer(Player player, HypnosReward reward)

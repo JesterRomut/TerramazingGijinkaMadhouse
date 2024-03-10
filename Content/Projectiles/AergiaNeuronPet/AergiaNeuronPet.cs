@@ -26,7 +26,18 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.AergiaNeuronPet
 		float hoveringY;
 		int hoveringTime;
 
-		int aergiaIndex = -1;
+		int AergiaIndex { get
+			{
+				return (int)Projectile.ai[0] - 1;
+			}
+			set
+			{
+				Projectile.ai[0] = value + 1;
+				Projectile.netUpdate = true;
+			}
+		}
+
+		//int aergiaIndex = -1;
 
 		public override void SetStaticDefaults()
 		{
@@ -49,6 +60,7 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.AergiaNeuronPet
 			Projectile.tileCollide = false;
 			Projectile.scale = 0.95f;
 
+			AergiaIndex = -1;
 		}
 
 		public override void AI()
@@ -63,12 +75,13 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.AergiaNeuronPet
 				Projectile.timeLeft = 4;
 			}
 
+			//if (AergiaIndex == -1) AergiaIndex =  Main.projectile.Where(proj => proj.active && proj.owner == Projectile.owner && proj.ModProjectile is AergiaNeuronPet).ToList().IndexOf(Projectile);
 
-			if (aergiaIndex == -1) aergiaIndex = Main.projectile.Where(proj => proj.active && proj.owner == Projectile.owner && proj.ModProjectile != null && proj.ModProjectile is AergiaNeuronPet).ToList().IndexOf(Projectile);
+			if (AergiaIndex == -1) AergiaIndex = Array.IndexOf(Array.FindAll(Main.projectile, proj => proj != null && proj.active && proj.owner == Projectile.owner && proj.ModProjectile is AergiaNeuronPet), Projectile);
 
 			Vector2 idealPos = player.Center;
 			idealPos.X -= player.width / 1.5f;
-			idealPos.X += -player.direction * 45 * (aergiaIndex+1);
+			idealPos.X += -player.direction * 45 * (AergiaIndex+1);
 			idealPos.Y -= player.height;
 
 			Vector2 vectorToIdlePosition = idealPos - Projectile.Center;

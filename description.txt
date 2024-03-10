@@ -1,8 +1,8 @@
 ﻿I want to re-made the "Pet Hypnos in Hypnos Mod", because the character appearance has changed.
 It has reused a lot of old codes, code readability is not guaranteed.
 
-[h2] Mod can be used without Calamity [/h2]
-[h2] Mod should works fine with Multipllayer [/h2]
+[h2] Mod should works fine without Calamity [/h2]
+[h2] Mod should works fine with Multiplayer [/h2]
 
 Added a chibii Hypnos as a town NPC. (Soul of the Eternal Intellect of Infinite Verboten Knowledge)
 
