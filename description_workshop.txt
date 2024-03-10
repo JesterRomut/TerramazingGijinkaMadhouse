@@ -4,18 +4,26 @@ It has reused a lot of old codes, code readability is not guaranteed.
 [h2] Mod can be used without Calamity [/h2]
 [h2] Mod should works fine with Multipllayer [/h2]
 
-Added a chibii Hypnos as a town NPC. (Soul of the Eternal Intellect of Infinite Verboten Knowledge)
+Added a chibii Hypnos as a town NPC. (Rework of "Soul of the Eternal Intellect of Infinite Verboten Knowledge")
 
 After defeating any mechanical bosses, the chibii Hypnos randomly appears, stays and departs in your town, like a traveling merchant.
 It does not offer shop, instead, it has a "Pray" option available.
+
+[img] https://jesterromut.github.io/workshop/terramazing/praising.gif [/img]
 
 1 gold is required to prove your faith to Hypnos. There will be random rewards according to your faithful acts, such as golden delights, exo prisms(post-Exo Mechs only), or even instantly send you to the eternal kingdom of heaven!
 
 You will get "Indulgence" after praying, used for special crafting.
 
 Added chibii Aergia Neurons as vanity pet and light pet, crafted from Indulgence and wires.
+No difference has made between vanity pet and light pet, except the slot consumed and lighting.
+Supports summoning 2 variants at the same time.
+
+[img] https://jesterromut.github.io/workshop/terramazing/aergiashow.gif [/img]
 
 Added a portable radio transmitter to request Hypnos' visit to your town, crafted from Indulgence. It needs Indulgence to work.
+
+[img] https://jesterromut.github.io/workshop/terramazing/broadcast.gif [/img]
 
 Notes:
 
@@ -31,11 +39,20 @@ Chibii Hypnos can be killed if Hypnos(Boss) is present and killed, dropping all 
 打败任意机械boss后，修普诺斯会在玩家的城镇随机出现、停留和离开，类似旅行商人。
 它不卖东西，替代地，它有一个 “祈祷” 选项。
 
+[img] https://jesterromut.github.io/workshop/terramazing/praising.gif [/img]
+
 为了证明你对它的忠诚，一枚金币是必要的付出。根据你的信仰之举，它会奖励你各种东西，金美味，星流棱镜（巨械后），甚至直接送你飞升上它的永恒之国度！
+祈祷后，你将得到“赎罪券”，用于特殊合成。
 
 加入了埃吉亚神经酱作为宠物和照明宠物，由赎罪券和电线合成。
+宠物和照明宠物没有区别，除了占用的格子和照明。
+支持同时召唤两种宠物。
+
+[img] https://jesterromut.github.io/workshop/terramazing/aergiashow.gif [/img]
 
 加入了无线电发射器来请求修普诺斯拜访你的城镇，由赎罪券合成，需要赎罪券来工作。
+
+[img] https://jesterromut.github.io/workshop/terramazing/broadcast.gif [/img]
 
 备注：
 

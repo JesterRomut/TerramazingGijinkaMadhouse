@@ -1,42 +1,57 @@
-﻿I want to re-made the "Pet Hypnos in Hypnos Mod", because the character appearance has changed.
-It has reused a lot of old codes, code readability is not guaranteed.
+﻿﻿But if we are living in the light, as Hypnos is in the light,
+Then we have fellowship with each other,
+And the spine of Thanatos, His brother, cleanses us from all sin,
+If we claim we have no sin, we are only fooling ourselves, and not living in the truth.
+But if we confess our sins to him, He is faithful,
+And just to forgive us our sins, and to cleanse us, from all wickedness.
 
-[h2] Mod should works fine without Calamity [/h2]
-[h2] Mod should works fine with Multiplayer [/h2]
+And so I tell you, every kind of sin and slander to be forgiven;
+But blasphemy against the brain will not be forgiven!
 
-Added a chibii Hypnos as a town NPC. (Soul of the Eternal Intellect of Infinite Verboten Knowledge)
+Impurity, lust, and evil desires.
+Don’t be greedy!
+For a greedy person is a idolater, worshipping the things of this world,
+Because of these sins, the anger of Hypnos is coming!
 
-After defeating any mechanical bosses, the chibii Hypnos randomly appears, stays and departs in your town, like a traveling merchant.
-It does not offer shop, instead, it has a "Pray" option available.
+No temptation has overtaken you, except what is common to mankind,
+And Hypnos is faithful. He will not let you be tempted beyond what you can bear!
 
-1 gold is required to prove your faith to Hypnos. There will be random rewards according to your faithful acts, such as golden delights, exo prisms(post-Exo Mechs only), or even instantly send you to the eternal kingdom of heaven!
+Fits of rage! Selfish ambition, dissensions, factions, and envy;
+Drunkenness, orgies, and the like!
+I warn you, as I did before, that those who live like this;
+Will not inherit the kingdom of Hypnos!
 
-You will get "Indulgence" after praying, used for special crafting.
+But if we walk in the light,
+As He is in the light,
+We have fellowship with one another,
+and the spine of Thanatos, His brother, purifies us all from sin!
 
-Added chibii Aergia Neurons as vanity pet and light pet, crafted from Indulgence and wires.
+For the wages of sin is death!
+But the free gift of Hypnos is eternal life in Thanatos, our lord!
 
-Added a portable radio transmitter to request Hypnos' visit to your town, crafted from Indulgence. It needs Indulgence to work.
+But if we are living in the light,
+As Hypnos is in the light,
+Then we have fellowship with each other,
+And the spine of Thanatos, His brother, cleanses us from all sin,
+If we claim we have no sin, we are only fooling ourselves, and not living in the truth.
+But if we confess our sins to Him, He is faithful,
+And just to forgive us our sins, and to cleanse us from all wickedness.
 
-Notes:
+Pride! Greed! Wrath! Envy! Lust! Gluttony, and Sloth!
 
-Chibii Hypnos can be killed if Hypnos(Boss) is present and killed, dropping all golds collected.
+So put to death the sinful, earthly things lurking within you.
+Have nothing to do with sexual immorality--
 
----- ZH ----
+Blasphemy against the Holy Brain!
 
-[h2] 本mod可以在没有灾厄的情况使用 [/h2]
-[h2] 本mod支持多人游戏 [/h2]
+All of us have become like one who is unclean,
+And all our righteous acts are like filthy rags!
+We all shrivel up like a leaf, and like the wind, our sins sweep us away!
 
-加入了修普诺斯娘作为城镇NPC。
+No temptation has overtaken you except what is common to mankind!
+And Hypnos is faithful. He will not let you be tempted beyond what you can bear!
 
-打败任意机械boss后，修普诺斯会在玩家的城镇随机出现、停留和离开，类似旅行商人。
-它不卖东西，替代地，它有一个 “祈祷” 选项。
+"Vengeance is mine; I will repay!" says the Lord!
 
-为了证明你对它的忠诚，一枚金币是必要的付出。根据你的信仰之举，它会奖励你各种东西，金美味，星流棱镜（巨械后），甚至直接送你飞升上它的永恒之国度！
-
-加入了埃吉亚神经酱作为宠物和照明宠物，由赎罪券和电线合成。
-
-加入了无线电发射器来请求修普诺斯拜访你的城镇，由赎罪券合成，需要赎罪券来工作。
-
-备注：
-
-在修普诺斯(boss)被击败的时候，修普诺斯娘会死掉，爆出所有收集的金币。
+There hath no temptation taken you but as is common to man.
+But Hypnos is faithful, Who will not suffer you to be tempted above all!

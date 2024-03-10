@@ -60,7 +60,7 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.AergiaNeuronPet
 			Projectile.tileCollide = false;
 			Projectile.scale = 0.95f;
 
-			AergiaIndex = -1;
+			//AergiaIndex = -1;
 		}
 
 		public override void AI()
