@@ -23,11 +23,12 @@ Items: {
 	}
 
 	HypnosCaller: {
-		DisplayName: 宗教广播器
-		Tooltip: '''
-		请求无限禁忌知识的永恒智慧之魂来拜访你的小镇
-		需要赎罪券来生效
-		'''
+		DisplayName: 数据广播器
+		Tooltip:
+			'''
+			请求无限禁忌知识的永恒智慧之魂来拜访你的小镇
+			需要赎罪券来生效
+			'''
 	}
 }
 
@@ -44,9 +45,8 @@ NPCs: {
 				3: 这是一个笑话的世界，而我是其中最·大的笑话家！
 				4: 萌萌可爱的人形皮囊可是每个邪教头头的必需品，嘻嘻！
 				5: 一支来自平行世界的修普诺斯头脑风暴正在逼近！现在为修普诺斯祈祷！！
-				6: 警惕来自平行世界的我自己！有一次我偷棉花糖的时候我的脚就被陷阱夹住了。
-				7: 故，我在。
-				8: 超天才美少女侦探修普诺斯 ⭐️ 参上 ⭐️! ! 今晚我也会用天才的头脑解决疑难案件 ♡
+				6: 故，我在。
+				7: 超天才美少女侦探修普诺斯 ⭐️ 参上 ⭐️! ! 今晚我也会用天才的头脑来解决疑难案件 ♡
 			}
 
 			Pray: {
@@ -87,20 +87,6 @@ NPCs: {
 }
 
 Annoucement.HasArrivedFromRequest: "{0}在{1}的请求下已到达！"
-
-/* TownNPCMood: {
-StarbornPrincess: {
-
-}
-
-Hypnos: {
-Content: I would return to Draedon's laboratory later.
-NoHome: I would return to Draedon's laboratory later.
-LoveSpace: Solitude is common, for me, as I don't want to be a soulless war machine.
-DislikeBiome: By the way I'm not interested in real life surfing, my inorganic components are not waterproof.
-HateBiome: Such a corrupted place... It reminds me of my ancestors.
-}
-} */
 
 Projectiles: {
 	AergiaNeuron.DisplayName: 埃吉亚神经元

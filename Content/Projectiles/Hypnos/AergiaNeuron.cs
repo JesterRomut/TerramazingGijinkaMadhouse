@@ -270,7 +270,6 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos
                 NPC target = Projectile.Center.NearestEnemy(800f);
                 if (target != null && target.active)
                 {
-					Projectile.netUpdate = true;
 					//CombatText.NewText(Projectile.Hitbox, Color.White, $"{target.FullName} {target.CanBeChasedBy()} {target.chaseable}");
 					timeLeft = refreshTimeLeft;
                     if (ShootCooldown > 0)
@@ -400,7 +399,6 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos
             //damage = AergiaNeuron.CalcDamage(target);
             modifiers.FinalDamage.Flat += AergiaNeuron.CalcDamage(target);
             //crit = true;
-            //target.Everquartz().mindcrashed = AergiaNeuron.buffDuration;
             AergiaNeuron.Debuffs.ForEach(buff => { target.AddBuff(buff, AergiaNeuron.buffDuration); });
 
             NPC target2 = Projectile.Center.NearestEnemy(800f);

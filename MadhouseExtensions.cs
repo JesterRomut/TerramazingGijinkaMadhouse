@@ -344,60 +344,65 @@ namespace TerramazingGijinkaMadhouse
 			spriteBatch.Begin(SpriteSortMode.Immediate, blendState, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
 		}
 
-		public static void PutItemInInventory(this Player player, int type, int theSelectedItem = -1)
-		{
-			for (int i = 0; i < 58; i++)
-			{
-				Item item = player.inventory[i];
-				if (item.stack > 0 && item.type == type && item.stack < item.maxStack)
-				{
-					item.stack++;
-					return;
-				}
-			}
-			if (theSelectedItem >= 0 && (player.inventory[theSelectedItem].type == ItemID.None || player.inventory[theSelectedItem].stack <= 0))
-			{
-				player.inventory[theSelectedItem].SetDefaults(type);
-				return;
-			}
-			Item item2 = new Item();
-			item2.SetDefaults(type);
-			if (player.GetItem(player.whoAmI, item2, GetItemSettings.ItemCreatedFromItemUsage).stack > 0)
-			{
-				Item item3 = item2;
-				if (theSelectedItem != -1)
-				{
-					item3 = player.inventory[theSelectedItem];
-				}
-				int number = Item.NewItem(new EntitySource_ItemUse(player, item3), (int)player.position.X, (int)player.position.Y, player.width, player.height, type, 1, noBroadcast: false, 0, noGrabDelay: true);
-				if (Main.netMode == NetmodeID.MultiplayerClient)
-				{
-					NetMessage.SendData(MessageID.SyncItem, -1, -1, null, number, 1f);
-				}
-			}
-			else
-			{
-				item2.position.X = player.Center.X - (float)(item2.width / 2);
-				item2.position.Y = player.Center.Y - (float)(item2.height / 2);
-				item2.active = true;
-				PopupText.NewText(PopupTextContext.RegularItemPickup, item2, 0);
-			}
-		}
+        
 
-		//internal static EverquartzItem ModItem(this Item item)
-		//{
-		//    try
-		//    {
-		//        return (EverquartzItem)item.ModItem;
-		//    }
-		//    catch (InvalidCastException)
-		//    {
-		//        return null;
-		//    }
+        public static void PutItemInInventory(this Player player, int type, int theSelectedItem = -1)
+        {
+            for (int i = 0; i < 58; i++)
+            {
+                Item item = player.inventory[i];
+                if (item.stack > 0 && item.type == type && item.stack < item.maxStack)
+                {
+					MadhouseUtils.AddItemStackUniversal(player, i);
+					switch (Main.netMode)
+                    {
+                        case NetmodeID.Server:
+							ModPacket packet = TerramazingGijinkaMadhouse.Instance.GetPacket();
+							packet.Write((byte)MadhouseMessageType.ItemStackAdded);
+                            packet.Write((byte)player.whoAmI);
+                            packet.Write((byte)i);
+							packet.Send(-1);
+                            break;
+                        case NetmodeID.MultiplayerClient:
+							ModPacket packet2 = TerramazingGijinkaMadhouse.Instance.GetPacket();
+							packet2.Write((byte)MadhouseMessageType.ItemStackAdded);
+							packet2.Write((byte)player.whoAmI);
+							packet2.Write((byte)i);
+							packet2.Send();
+                            break;
+					}
+                    return;
+                }
+            }
+            if (theSelectedItem >= 0 && (player.inventory[theSelectedItem].type == ItemID.None || player.inventory[theSelectedItem].stack <= 0))
+            {
+                player.inventory[theSelectedItem].SetDefaults(type);
+                return;
+            }
+            Item item2 = new Item();
+            item2.SetDefaults(type);
+            if (player.GetItem(player.whoAmI, item2, GetItemSettings.ItemCreatedFromItemUsage).stack > 0)
+            {
+                Item item3 = item2;
+                if (theSelectedItem != -1)
+                {
+                    item3 = player.inventory[theSelectedItem];
+                }
+                int number = Item.NewItem(new EntitySource_ItemUse(player, item3), (int)player.position.X, (int)player.position.Y, player.width, player.height, type, 1, noBroadcast: false, 0, noGrabDelay: true);
+                if (Main.netMode == NetmodeID.MultiplayerClient)
+                {
+                    NetMessage.SendData(MessageID.SyncItem, -1, -1, null, number, 1f);
+                }
+            }
+            else
+            {
+                item2.position.X = player.Center.X - (float)(item2.width / 2);
+                item2.position.Y = player.Center.Y - (float)(item2.height / 2);
+                item2.active = true;
+                PopupText.NewText(PopupTextContext.RegularItemPickup, item2, 0);
+            }
+        }
 
-
-		//}
-
-	}
+    }
 
 }

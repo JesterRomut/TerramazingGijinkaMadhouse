@@ -32,7 +32,12 @@ namespace TerramazingGijinkaMadhouse
             return true;
         }
 
-        internal static bool TileCapable(int tileX, int tileY)
+		public static void AddItemStackUniversal(Player player, int slot)
+		{
+			player.inventory[slot].stack++;
+		}
+
+		internal static bool TileCapable(int tileX, int tileY)
         {
             if (tileX < 0 || tileY < 0 || tileX >= Main.maxTilesX || tileY >= Main.maxTilesY)
             {

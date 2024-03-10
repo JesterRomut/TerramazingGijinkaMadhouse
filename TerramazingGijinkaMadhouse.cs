@@ -11,6 +11,7 @@ using Terraria.ModLoader.IO;
 using System.Collections;
 using TerramazingGijinkaMadhouse.Content.NPCs.Hypnos;
 using CalamityMod;
+using TerramazingGijinkaMadhouse.Common;
 
 namespace TerramazingGijinkaMadhouse
 {
@@ -39,7 +40,8 @@ namespace TerramazingGijinkaMadhouse
 			switch (msgType)
 			{
 				case MadhouseMessageType.HypnosReward: // server
-					Player prayer = Main.player[reader.ReadInt32()];
+													   //Player prayer = Main.player[reader.ReadInt32()];
+					Player prayer = Main.player[reader.ReadByte()];
 					byte[] byteArray = reader.ReadBytes((MadhouseUtils.EnumCount<HypnosReward>() - 1) / 8 + 1);
 					BitArray bitArray = new BitArray(byteArray);
 					List<HypnosReward> rewards = new List<HypnosReward>();
@@ -66,14 +68,35 @@ namespace TerramazingGijinkaMadhouse
 					JHypnos.AddBlessingVisuals(Main.player[Main.myPlayer].Center);
 					break;
 				case MadhouseMessageType.HypnosArrived: // server
-					int player = reader.ReadInt32();
-					JHypnos.SpawnTravellingMerchant(player == -1? null : Main.player[player]);
+					byte player = reader.ReadByte();
+					JHypnos.SpawnTravellingMerchant(player == 0? null : Main.player[player - 1]);
 					break;
-					//case EverquartzMessageType.EverquartzSyncPlayer:
-					//    byte playernumber = reader.ReadByte();
-					//    EverquartzPlayer ePlayer = Main.player[playernumber].GetModPlayer<EverquartzPlayer>();
-					//    ePlayer.lastSleepingSpot = reader.ReadVector2().ToPoint();
-					//    break;
+				case MadhouseMessageType.ItemStackAdded:// client to server
+														//JHypnos.AddIndulgenceUniversal(Main.player[reader.ReadInt32()]);
+					byte player2 = reader.ReadByte();
+					byte slot = reader.ReadByte();
+
+					MadhouseUtils.AddItemStackUniversal(Main.player[player2], slot);
+					if (Main.netMode == NetmodeID.Server)
+					{
+						ModPacket packet = GetPacket();
+						packet.Write((byte)MadhouseMessageType.ItemStackAdded);
+						packet.Write((byte)player2);
+						packet.Write((byte)slot);
+						packet.Send(-1, player2);
+					}
+					break;
+				case MadhouseMessageType.MadhousePlayerSync:
+					byte playerNumber = reader.ReadByte();
+					MadhousePlayer examplePlayer = Main.player[playerNumber].Madhouse();
+					examplePlayer.ReceivePlayerSync(reader);
+
+					if (Main.netMode == NetmodeID.Server)
+					{
+						// Forward the changes to the other clients
+						examplePlayer.SyncPlayer(-1, whoAmI, false);
+					}
+					break;
 			}
 		}
 
@@ -92,11 +115,7 @@ namespace TerramazingGijinkaMadhouse
 			ModCompatibility.hypnosEnabled = ModLoader.HasMod("HypnosMod");
 			ModCompatibility.calRemixEnabled = ModLoader.HasMod("CalRemix");
 
-
-			//if (ModCompatibility.calamityEnabled)
-			//{
-			//    CalamityILChanges.Load();
-			//}
+			
 
 
 		}
@@ -107,10 +126,6 @@ namespace TerramazingGijinkaMadhouse
 		{
 			base.Unload();
 
-			//if (ModCompatibility.calamityEnabled)
-			//{
-			//    CalamityILChanges.Unload();
-			//}
 
 			ModCompatibility.calamityEnabled = false;
 			ModCompatibility.hypnosEnabled = false;
@@ -137,13 +152,6 @@ namespace TerramazingGijinkaMadhouse
 			}
 			switch (argStr)
 			{
-				//	case "Transmogrification":
-				//	case "AddTransmogrification":
-				//	case "AddTrans":
-				//	case "RegisterTransmogrification":
-				//	case "RegisterTrans":
-				//		TransmogrificationManager.AddFromModCall(args.Skip(1));
-				//		return null;
 				default:
 					return null;
 			}
@@ -154,7 +162,6 @@ namespace TerramazingGijinkaMadhouse
 			Mod censusMod = ModCompatibility.censusMod;
 			//if (censusMod != null)
 			//{
-			//	censusMod.Call("TownNPCCondition", ModContent.NPCType<StarbornPrincess>(), Language.GetTextValue(StarbornPrincess.CensusConditionKey));
 			//}
 		}
 
@@ -170,6 +177,7 @@ namespace TerramazingGijinkaMadhouse
 			JHypnos.hypnoCoins = 0;
 			JHypnos.timePassed = 0;
 			JHypnos.spawnTime = Double.MaxValue;
+			JHypnos.ResetInstance();
 		}
 		public override void LoadWorldData(TagCompound tag)
 		{
@@ -185,24 +193,13 @@ namespace TerramazingGijinkaMadhouse
 			JHypnos.UpdateTravelingMerchant();
 		}
 
-		public static List<int> UniqueNPCs => new List<int>() {
-			ModContent.NPCType<JHypnos>(),
-		};
+		//public static List<int> UniqueNPCs => new List<int>() {
+		//	ModContent.NPCType<JHypnos>(),
+		//};
 
 		public override void PreUpdateNPCs()
 		{
-			UniqueNPCs.ForEach(AntiDupe);
-		}
-
-
-
-		public static void AntiDupe(int type)
-		{
-			IEnumerable<NPC> possiblyMultipleDeimi = Main.npc.Where(npc => npc != null && npc.active && npc.type == type);
-			if (possiblyMultipleDeimi.Count() > 1)
-			{
-				possiblyMultipleDeimi.SkipLast(1).ToList().ForEach(npc => { npc.netUpdate = true; npc.active = false; });
-			}
+			//UniqueNPCs.ForEach(AntiDupe);
 		}
 	}
 
@@ -215,7 +212,9 @@ namespace TerramazingGijinkaMadhouse
 		HypnoCoinAdd, // 
 		HypnosDeparted, // 
 		HypnosBlessingReceived, // 
-		HypnosArrived // id, calledPlayer: int
+		HypnosArrived, // id, calledPlayer: int
+		ItemStackAdded, // id, player: int, slot: int
+		MadhousePlayerSync
 	}
 
 	public static class ModCompatibility

@@ -1,4 +1,6 @@
-﻿### !! Mod can be used without Calamity !!
+﻿### Mod can be used without Calamity.
+
+### Mod should works fine with multiplayer.
 
 Added a chibii Hypnos as a town NPC.
 

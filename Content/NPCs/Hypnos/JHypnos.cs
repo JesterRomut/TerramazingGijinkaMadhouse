@@ -29,6 +29,7 @@ using CalamityMod.Items.Materials;
 using TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos;
 using TerramazingGijinkaMadhouse.Content.Buffs.Hypnos;
 using TerramazingGijinkaMadhouse.Content.Items;
+using Terraria.Map;
 
 namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 {
@@ -124,6 +125,7 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 				NPC hypnos = Main.npc.ElementAtOrDefault(instance);
 				if (hypnos == default || !hypnos.active)
 				{
+					//hypnos = Main.npc.Where(npc => npc != null && npc.active && )
 					instance = -1;
 					return null;
 				}
@@ -131,9 +133,15 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 			}
 			set
 			{
-				instance = value.whoAmI;
+				instance = value == null? -1 : value.whoAmI;
 			}
 		}
+
+		public static void ResetInstance()
+		{
+			instance = -1;
+		}
+
 		#endregion InstanceManagement
 
 		#region HandleInternet
@@ -146,6 +154,12 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 			//hypnos = null;
 			timePassed = 0;
 		}
+
+		//public static void AddSlotStackUniversal(Player player)
+		//{
+		//	player.PutItemInInventoryFromItemUsage(ModContent.ItemType<Indulgence>());
+		//}
+
 		public static void HandleHypnoCoinAddServer()
 		{
 			hypnoCoins++;
@@ -153,9 +167,43 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 
 		public static void HandleRewardsServer(Player player, List<HypnosReward> rewards)
 		{
+			//if (Main.netMode == NetmodeID.SinglePlayer)
+			//{
+			//	AddSlotStackUniversal(player);
+			//}
+			//else
+			//{
+			//	ModPacket packet = TerramazingGijinkaMadhouse.Instance.GetPacket();
+			//	packet.Write((byte)MadhouseMessageType.ItemStackAdded);
+			//	packet.Write(player.whoAmI);
+			//	packet.Send();
+			//}
 			player.PutItemInInventory(ModContent.ItemType<Indulgence>());
+			//PutItemsInInventoryLikeIndulgence(player, ModContent.ItemType<Indulgence>());
+			//player.QuickSpawnItem(Instance.GetSource_GiftOrReward(), ModContent.ItemType<Indulgence>());
+			
 			//Item.NewItem(player.GetSource_GiftOrReward(), player.Center, ModContent.ItemType<Indulgence>(), noGrabDelay: true);
 			rewards.ForEach(reward => HandleRewardServer(player, reward));
+		}
+
+		public override void SendExtraAI(BinaryWriter writer)
+		{
+			for (int i = 0; i < 12; i++)
+			{
+				writer.Write((byte)neurons[i]);
+			}
+
+			base.SendExtraAI(writer);
+		}
+
+		public override void ReceiveExtraAI(BinaryReader reader)
+		{
+			for (int i = 0; i < 12; i++)
+			{
+				neurons[i] = reader.ReadByte();
+			}
+
+			base.ReceiveExtraAI(reader);
 		}
 
 		public static void AddBlessingVisuals(Vector2 position)
@@ -631,7 +679,7 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 			{
 				ModPacket packet = ModContent.GetInstance<TerramazingGijinkaMadhouse>().GetPacket();
 				packet.Write((byte)MadhouseMessageType.HypnosArrived);
-				packet.Write(calledPlayer == null? -1: calledPlayer.whoAmI);
+				packet.Write(calledPlayer == null? -1: (byte)calledPlayer.whoAmI + 1);
 				packet.Send();
 			}
 			else

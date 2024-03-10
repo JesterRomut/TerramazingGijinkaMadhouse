@@ -9,6 +9,7 @@ using TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos;
 using TerramazingGijinkaMadhouse.Content.NPCs.Hypnos;
 using CalamityMod;
 using Microsoft.Xna.Framework;
+using System.IO;
 
 namespace TerramazingGijinkaMadhouse.Common
 {
@@ -159,7 +160,7 @@ namespace TerramazingGijinkaMadhouse.Common
                 //this.Mod.Logger.Info(rewards);
                 ModPacket packet = Mod.GetPacket();
                 packet.Write((byte)MadhouseMessageType.HypnosReward);
-                packet.Write(Player.whoAmI);
+                packet.Write((byte)Player.whoAmI);
                 bool[] rewardBools = new bool[rewardCount];
                 rewards.ForEach(reward => rewardBools[(int)reward] = true);
                 BitArray bitArray = new BitArray(rewardBools);
@@ -171,9 +172,36 @@ namespace TerramazingGijinkaMadhouse.Common
             InterruptPraisingHypnos();
         }
 
+		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+		{
+			ModPacket packet = Mod.GetPacket();
+			packet.Write((byte)MadhouseMessageType.MadhousePlayerSync);
+			packet.Write((byte)Player.whoAmI);
+			packet.Write((byte)praisingTimer);
+			packet.Send(toWho, fromWho);
+		}
 
+		// Called in ExampleMod.Networking.cs
+		public void ReceivePlayerSync(BinaryReader reader)
+		{
+			praisingTimer = reader.ReadByte();
+		}
 
-        public void UpdatePraisingHypnos()
+		public override void CopyClientState(ModPlayer targetCopy)
+		{
+			MadhousePlayer clone = (MadhousePlayer)targetCopy;
+			clone.praisingTimer = praisingTimer;
+		}
+
+		public override void SendClientChanges(ModPlayer clientPlayer)
+		{
+			MadhousePlayer clone = (MadhousePlayer)clientPlayer;
+
+			if (praisingTimer != clone.praisingTimer)
+				SyncPlayer(toWho: -1, fromWho: Main.myPlayer, newPlayer: false);
+		}
+
+		public void UpdatePraisingHypnos()
         {
             if (!IsPraisingHypnos)
             {
