@@ -25,7 +25,7 @@ Added a portable radio transmitter to request Hypnos' visit to your town, crafte
 
 Notes:
 
-Chibii Hypnos can be killed if Hypnos(Boss) is present and killed, dropping all golds collected.
+Chibii Hypnos will be killed if Hypnos(Boss) is present and killed, dropping all golds collected.
 <hr>
 
 ---- ZH ----

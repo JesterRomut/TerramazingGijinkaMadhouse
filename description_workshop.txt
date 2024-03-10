@@ -1,8 +1,7 @@
-﻿I want to re-made the "Pet Hypnos in Hypnos Mod", because the character appearance has changed.
-It has reused a lot of old codes, code readability is not guaranteed.
+﻿I want to rework the "Pet Hypnos in Hypnos Mod", because I don't like the old sprites :')
 
-[h2] Mod can be used without Calamity [/h2]
-[h2] Mod should works fine with Multipllayer [/h2]
+[h3] Mod works and should works fine without Calamity [/h3]
+[h3] Mod works and should works fine with Multipllayer [/h3]
 
 Added a chibii Hypnos as a town NPC. (Rework of "Soul of the Eternal Intellect of Infinite Verboten Knowledge")
 
@@ -27,12 +26,18 @@ Added a portable radio transmitter to request Hypnos' visit to your town, crafte
 
 Notes:
 
-Chibii Hypnos can be killed if Hypnos(Boss) is present and killed, dropping all golds collected.
+Chibii Hypnos will be killed if Hypnos(Boss) is present and killed, dropping all golds collected.
+
+Source code: https://github.com/JesterRomut/TerramazingGijinkaMadhouse
+(It has reused a lot of old codes from 1yr ago, code readability is not guaranteed. ; ;)
 
 ---- ZH ----
 
-[h2] 本mod可以在没有灾厄的情况使用 [/h2]
-[h2] 本mod支持多人游戏 [/h2]
+我打算重做一下“修普诺斯娘宠物mod”，因为人物的外观有改动。
+这个mod用了很多一年前的旧代码，不保证代码可读性。
+
+[h2] 本mod可以企且应该可以在没有灾厄的情况使用 [/h2]
+[h2] 本mod支持且应该支持多人游戏 [/h2]
 
 加入了修普诺斯娘作为城镇NPC。
 
@@ -57,3 +62,6 @@ Chibii Hypnos can be killed if Hypnos(Boss) is present and killed, dropping all 
 备注：
 
 在修普诺斯(boss)被击败的时候，修普诺斯娘会死掉，爆出所有收集的金币。
+
+源码: https://github.com/JesterRomut/TerramazingGijinkaMadhouse
+(复用了很多一年前的古老屎山代码，代码可读性堪忧 ; ;)
