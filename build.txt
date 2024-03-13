@@ -1,4 +1,4 @@
 displayName = Town NPC Hypnos in Hypnos Mod
 author = JesterRomut
-version = 0.4.2
+version = 0.4.3
 weakReferences = CalamityMod, HypnosMod
