@@ -28,6 +28,7 @@ Notes:
 
 Chibii Hypnos will be killed if Hypnos(Boss) is present and killed, dropping all golds collected.
 
+version: {ModVersion}
 Source code: https://github.com/JesterRomut/TerramazingGijinkaMadhouse
 (It has reused a lot of old codes from 1yr ago, code readability is not guaranteed. ; ;)
 Bug reports are welcomed in Github and comment section.
@@ -64,6 +65,7 @@ Bug reports are welcomed in Github and comment section.
 
 在修普诺斯(boss)被击败的时候，修普诺斯娘会死掉，爆出所有收集的金币。
 
+版本: {ModVersion}
 源码: https://github.com/JesterRomut/TerramazingGijinkaMadhouse
 (复用了很多一年前的古老屎山代码，代码可读性堪忧 ; ;)
 欢迎在座各位在github和评论区报告bug。

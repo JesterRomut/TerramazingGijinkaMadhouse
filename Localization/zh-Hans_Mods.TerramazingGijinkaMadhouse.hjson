@@ -86,7 +86,7 @@ NPCs: {
 	}
 }
 
-Annoucement.HasArrivedFromRequest: "{0}在{1}的请求下已到达！"
+Announcement.HasArrivedFromRequest: "{0}在{1}的请求下已到达！"
 
 Projectiles: {
 	AergiaNeuron.DisplayName: 埃吉亚神经元
@@ -111,3 +111,5 @@ Buffs: {
 		Description: 正在分析你的鼠标指针
 	}
 }
+
+Emotes.JHypnosEmote.Command: chibiihypno

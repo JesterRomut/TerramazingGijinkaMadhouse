@@ -30,6 +30,7 @@ using TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos;
 using TerramazingGijinkaMadhouse.Content.Buffs.Hypnos;
 using TerramazingGijinkaMadhouse.Content.Items;
 using Terraria.Map;
+using TerramazingGijinkaMadhouse.Content.EmoteBubbles;
 
 namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 {
@@ -363,6 +364,8 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 			NPCID.Sets.DangerDetectRange[Type] = 600;
 			NPCID.Sets.ActsLikeTownNPC[Type] = true;
 			NPCID.Sets.NoTownNPCHappiness[Type] = true;
+
+			NPCID.Sets.FaceEmote[Type] = ModContent.EmoteBubbleType<JHypnosEmote>();
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -841,13 +844,13 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 
 			if (calledPlayer != null && calledPlayer.active)
 			{
-				if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("Mods.TerramazingGijinkaMadhouse.Annoucement.HasArrivedFromRequest", hypnos.FullName, calledPlayer.name), 50, 125, 255);
-				else ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Mods.TerramazingGijinkaMadhouse.Annoucement.HasArrivedFromRequest", hypnos.FullName, calledPlayer.name), new Color(50, 125, 255));
+				if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("Mods.TerramazingGijinkaMadhouse.Announcement.HasArrivedFromRequest", hypnos.FullName, calledPlayer.name), 50, 125, 255);
+				else ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Mods.TerramazingGijinkaMadhouse.Announcement.HasArrivedFromRequest", hypnos.FullName, calledPlayer.name), new Color(50, 125, 255));
 			}
 			else
 			{
-				if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("Annoucement.HasArrived", hypnos.FullName), 50, 125, 255);
-				else ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Annoucement.HasArrived", hypnos.FullName), new Color(50, 125, 255));
+				if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("Announcement.HasArrived", hypnos.FullName), 50, 125, 255);
+				else ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasArrived", hypnos.FullName), new Color(50, 125, 255));
 			}
 			// Annouce that the traveler has spawned in!
 

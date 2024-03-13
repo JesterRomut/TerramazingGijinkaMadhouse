@@ -86,7 +86,7 @@ NPCs: {
 	}
 }
 
-Annoucement.HasArrivedFromRequest: "{0} has arrived at {1}'s request!"
+Announcement.HasArrivedFromRequest: "{0} has arrived at {1}'s request!"
 
 Projectiles: {
 	AergiaNeuron.DisplayName: Aergia Neuron
@@ -111,3 +111,5 @@ Buffs: {
 		Description: Is analyzing your cursor
 	}
 }
+
+Emotes.JHypnosEmote.Command: chibiihypno
