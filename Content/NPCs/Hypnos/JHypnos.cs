@@ -720,6 +720,7 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 				}
 			}
 
+			spawnTime.GetType();
 			// Spawn the traveler if the spawn conditions are met (time of day, no events, no sundial)
 			if (!travelerIsThere && CanSpawnNow())
 			{
@@ -845,8 +846,8 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 			}
 			else
 			{
-				if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("Mods.TerramazingGijinkaMadhouse.Annoucement.HasArrivedFromRequest", hypnos.FullName), 50, 125, 255);
-				else ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Mods.TerramazingGijinkaMadhouse.Annoucement.HasArrivedFromRequest", hypnos.FullName), new Color(50, 125, 255));
+				if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("Annoucement.HasArrived", hypnos.FullName), 50, 125, 255);
+				else ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Annoucement.HasArrived", hypnos.FullName), new Color(50, 125, 255));
 			}
 			// Annouce that the traveler has spawned in!
 
@@ -862,7 +863,7 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 				return false;
 
 			// can spawn if daytime, and between the spawn and despawn times
-			return Main.dayTime && Main.time >= spawnTime;
+			return Main.time >= spawnTime;
 		}
 
 		public static void FindHomeTile(out int homeTileX, out int homeTileY, Player calledPlayer = null)
