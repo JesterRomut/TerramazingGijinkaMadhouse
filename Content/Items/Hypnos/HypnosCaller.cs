@@ -36,7 +36,8 @@ namespace TerramazingGijinkaMadhouse.Content.Items.Hypnos
 		public override bool CanUseItem(Player player)
 		{
 			//JHypnos.Instance?.StrikeInstantKill();
-			return JHypnos.Instance == null;
+			//return JHypnos.Instance == null;
+			return NPC.FindFirstNPC(ModContent.NPCType<JHypnos>()) == -1;
 		}
 
 		public override bool? UseItem(Player player)
@@ -51,7 +52,7 @@ namespace TerramazingGijinkaMadhouse.Content.Items.Hypnos
 
 		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
-			JHypnos.SpawnTravellingMerchant(player);
+			JHypnos.SpawnTravelingMerchant(player);
 
 			for (float num = 5f; num <= 18f; num += 3f)
 			{

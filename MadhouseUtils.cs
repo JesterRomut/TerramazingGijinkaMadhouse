@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework;
 using Terraria.ID;
 using System;
 using Terraria.Localization;
+using Terraria.DataStructures;
+using Terraria.GameContent;
 
 namespace TerramazingGijinkaMadhouse
 {
@@ -37,6 +39,34 @@ namespace TerramazingGijinkaMadhouse
 			player.inventory[slot].stack++;
 		}
 
+		//public static IEnumerable<TeleportPylonInfo> NearbyPylons(Player player, float range)
+		//{
+		//	if (!Main.PylonSystem.HasAnyPylon() || range == 0)
+		//		yield break;
+
+		//	Point16 playerCenter = player.Center.ToTileCoordinates16();
+		//	short pX = playerCenter.X, pY = playerCenter.Y;
+		//	float r = range / 16;
+
+		//	foreach (TeleportPylonInfo pylon in Main.PylonSystem.Pylons)
+		//	{
+		//		if (!IsPylonValidForRemoteAccessLinking(player, pylon, checkNPCDanger: false))
+		//			continue;
+
+		//		if (range < 0)
+		//		{
+		//			yield return pylon;
+		//			continue;
+		//		}
+
+		//		int x = pylon.PositionInTiles.X, y = pylon.PositionInTiles.Y;
+		//		float xMin = x - r, xMax = x + r + 1, yMin = y - r, yMax = y + r + 1;
+
+		//		//Range < 0 is treated as infinite range
+		//		if (xMin <= pX && pX <= xMax && yMin <= pY && pY <= yMax)
+		//			yield return pylon;
+		//	}
+		//}
 		internal static bool TileCapable(int tileX, int tileY)
         {
             if (tileX < 0 || tileY < 0 || tileX >= Main.maxTilesX || tileY >= Main.maxTilesY)

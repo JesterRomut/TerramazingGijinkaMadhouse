@@ -201,7 +201,7 @@ namespace TerramazingGijinkaMadhouse
             return target;
         }
 
-        public static NPC NearestEnemy(this Vector2 position, float maxDistance)
+        public static NPC NearestEnemy(this Vector2 position, float maxDistance, int exclude = -1)
         {
 
             NPC target = null;
@@ -212,7 +212,7 @@ namespace TerramazingGijinkaMadhouse
             foreach (NPC npc in Main.npc)
             {
 
-                if (checkNPCInSight(npc))
+                if (checkNPCInSight(npc) && npc.whoAmI != exclude)
                 {
                         distance = Vector2.Distance(position, npc.Center);
                         target = npc;
@@ -223,7 +223,17 @@ namespace TerramazingGijinkaMadhouse
             return target;
         }
 
-        public static bool CheckNPCInSight(this Vector2 position, NPC npc, float distance) => npc != null && npc.active && npc.CanBeChasedBy() && npc.chaseable && Vector2.Distance(position, npc.Center) < distance + (npc.width / 2 + (float)(npc.height / 2));
+		public static bool TileSolid(this Tile tile)
+		{
+			if (tile != null && tile.HasUnactuatedTile && Main.tileSolid[tile.TileType])
+			{
+				return !TileID.Sets.Platforms[tile.TileType];
+			}
+
+			return false;
+		}
+
+		public static bool CheckNPCInSight(this Vector2 position, NPC npc, float distance) => npc != null && npc.active && npc.CanBeChasedBy() && npc.chaseable && Vector2.Distance(position, npc.Center) < distance + (npc.width / 2 + (float)(npc.height / 2));
         //public static NPC NearestEnemyPreferNoMindcrashed(this Vector2 position, float maxDistance)
         //{
 

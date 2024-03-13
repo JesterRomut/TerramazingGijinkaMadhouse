@@ -86,12 +86,21 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos
         {
             get
             {
-                return (int)Projectile.ai[1];
+                return (int)Projectile.ai[2];
             }
             set
             {
-                Projectile.ai[1] = value;
+                Projectile.ai[2] = value;
             }
+        }
+
+        public int Hypnos
+        {
+            get
+            {
+                return (int)Projectile.ai[1];
+            }
+            set { Projectile.ai[1] = value; }
         }
 
         int AergiaIndex { get {
@@ -201,9 +210,9 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos
 		#region AI
 		public override void AI()
         {
-            NPC hypnos = JHypnos.Instance;
+            NPC hypnos = Main.npc[Hypnos];
 
-            if (hypnos == null)
+            if (hypnos == null || !hypnos.active)
             {
                 Projectile.Kill();
                 return;
@@ -327,8 +336,12 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos
 
 		public override void OnKill(int timeLeft)
 		{
-			JHypnos.neurons[AergiaIndex] = -1;
-			Projectile.netUpdate = true;
+            if (Main.npc[Hypnos].ModNPC is JHypnos hypnos)
+            {
+				hypnos.neurons[AergiaIndex] = -1;
+				Projectile.netUpdate = true;
+			}
+			
 
 			base.OnKill(timeLeft);
 
@@ -401,10 +414,10 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.Hypnos
             //crit = true;
             AergiaNeuron.Debuffs.ForEach(buff => { target.AddBuff(buff, AergiaNeuron.buffDuration); });
 
-            NPC target2 = Projectile.Center.NearestEnemy(800f);
+            NPC target2 = Projectile.Center.NearestEnemy(800f, target.whoAmI);
             if (target2 != null && target2.whoAmI != TargetInt)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromAI(), target.Center, Projectile.SafeDirectionTo(target2.Center) * AergiaNeuron.laserSpeed, ModContent.ProjectileType<BlueExoPulseLaser>(), 1, 0, 0, target.whoAmI);
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), target.Center, Projectile.SafeDirectionTo(target2.Center) * AergiaNeuron.laserSpeed, ModContent.ProjectileType<BlueExoPulseLaser>(), 1, 0, 0, target2.whoAmI);
 
 
 

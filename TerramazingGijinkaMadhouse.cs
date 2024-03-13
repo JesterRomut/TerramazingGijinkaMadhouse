@@ -58,10 +58,10 @@ namespace TerramazingGijinkaMadhouse
 					JHypnos.HandleHypnoCoinAddServer();
 					break;
 				case MadhouseMessageType.HypnosDeparted:
-					NPC hypnos = JHypnos.Instance;
-					if (hypnos != null)
+					int hypnos = NPC.FindFirstNPC(ModContent.NPCType<JHypnos>());
+					if (hypnos != -1)
 					{
-						JHypnos.HandleDepartHypnosUniversal(hypnos);
+						JHypnos.HandleDepartHypnosUniversal(Main.npc[hypnos]);
 					}
 					break;
 				case MadhouseMessageType.HypnosBlessingReceived: // client
@@ -69,7 +69,7 @@ namespace TerramazingGijinkaMadhouse
 					break;
 				case MadhouseMessageType.HypnosArrived: // server
 					byte player = reader.ReadByte();
-					JHypnos.SpawnTravellingMerchant(player == 0? null : Main.player[player - 1]);
+					JHypnos.SpawnTravelingMerchant(player == 0? null : Main.player[player - 1]);
 					break;
 				case MadhouseMessageType.ItemStackAdded:// client to server
 														//JHypnos.AddIndulgenceUniversal(Main.player[reader.ReadInt32()]);
@@ -105,36 +105,13 @@ namespace TerramazingGijinkaMadhouse
 			base.Load();
 			Instance = this;
 
-
-			ModCompatibility.censusMod = null;
-			ModLoader.TryGetMod("Census", out ModCompatibility.censusMod);
-			ModCompatibility.hypnosMod = null;
-			ModLoader.TryGetMod("HypnosMod", out ModCompatibility.hypnosMod);
-
-			ModCompatibility.calamityEnabled = ModLoader.HasMod("CalamityMod");
-			ModCompatibility.hypnosEnabled = ModLoader.HasMod("HypnosMod");
-			ModCompatibility.calRemixEnabled = ModLoader.HasMod("CalRemix");
-
-			
-
-
+			ModCompatibility.Load();
 		}
-
-
-
 		public override void Unload()
 		{
 			base.Unload();
 
-
-			ModCompatibility.calamityEnabled = false;
-			ModCompatibility.hypnosEnabled = false;
-			ModCompatibility.calRemixEnabled = false;
-
-			ModCompatibility.censusMod = null;
-			ModCompatibility.hypnosMod = null;
-
-
+			ModCompatibility.Unload();
 
 			Instance = null;
 
@@ -177,7 +154,7 @@ namespace TerramazingGijinkaMadhouse
 			JHypnos.hypnoCoins = 0;
 			JHypnos.timePassed = 0;
 			JHypnos.spawnTime = Double.MaxValue;
-			JHypnos.ResetInstance();
+			//JHypnos.ResetInstance();
 		}
 		public override void LoadWorldData(TagCompound tag)
 		{
@@ -242,6 +219,30 @@ namespace TerramazingGijinkaMadhouse
 			{
 				hypnosBossType = value;
 			}
+		}
+
+		public static void Load()
+		{
+			censusMod = null;
+			ModLoader.TryGetMod("Census", out censusMod);
+			hypnosMod = null;
+			ModLoader.TryGetMod("HypnosMod", out hypnosMod);
+
+			calamityEnabled = ModLoader.HasMod("CalamityMod");
+			hypnosEnabled = ModLoader.HasMod("HypnosMod");
+			calRemixEnabled = ModLoader.HasMod("CalRemix");
+		}
+
+		public static void Unload()
+		{
+			calamityEnabled = false;
+			hypnosEnabled = false;
+			calRemixEnabled = false;
+
+			censusMod = null;
+			hypnosMod = null;
+
+			hypnosBossType = null;
 		}
 	}
 

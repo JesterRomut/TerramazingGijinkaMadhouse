@@ -47,7 +47,6 @@ namespace TerramazingGijinkaMadhouse.Content.Projectiles.AergiaNeuronPet
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
 		}
 
-		// Token: 0x06004568 RID: 17768 RVA: 0x002042DC File Offset: 0x002024DC
 		public override void SetDefaults()
 		{
 			Projectile.netImportant = true;

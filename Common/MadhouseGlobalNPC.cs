@@ -139,10 +139,10 @@ namespace TerramazingGijinkaMadhouse.Common
 
         public override void OnKill(NPC npc)
         {
-            if (npc.boss && ModCompatibility.hypnosEnabled && ModCompatibility.HypnosBossType.HasValue && npc.type == ModCompatibility.HypnosBossType.Value)
+            if (ModCompatibility.hypnosEnabled && npc.boss && ModCompatibility.HypnosBossType.HasValue && npc.type == ModCompatibility.HypnosBossType.Value)
             {
                 int hypNpcType = ModContent.NPCType<JHypnos>();
-                Main.npc.Where(npc2 => npc2.active && npc2.type == hypNpcType).ToList().ForEach(hypno => ((JHypnos)hypno.ModNPC).KillWithCoins());
+                Main.npc.Where(npc2 => npc2.active && npc2.type == hypNpcType).ToList().ForEach(hypno => hypno.StrikeInstantKill());
             }
         }
     }

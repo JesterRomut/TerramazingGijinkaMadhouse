@@ -128,8 +128,9 @@ namespace TerramazingGijinkaMadhouse.Common
 
 		public void DonePraisingHypnos()
 		{
+			if (Main.myPlayer != Player.whoAmI) return;
 			//client side
-			NPC hypnos = JHypnos.Instance;
+			NPC hypnos = Player.TalkNPC;
 			// AergiaNeuron.AddElectricDusts(hypnos != null ? hypnos : Player);
 
 			Vector2 pos = hypnos.Center;

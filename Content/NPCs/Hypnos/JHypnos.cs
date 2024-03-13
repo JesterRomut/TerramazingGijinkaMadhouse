@@ -73,7 +73,7 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 		{
 			Volume = 0.4f
 		};
-
+		public static readonly SoundStyle ClamFlare = new SoundStyle("TerramazingGijinkaMadhouse/Assets/Sounds/FlareSound");
 
 		public static readonly Asset<Texture2D> eyepatchTex = ModContent.Request<Texture2D>("TerramazingGijinkaMadhouse/Content/NPCs/Hypnos/JHypnos_Eyepatch");
 		public static readonly Asset<Texture2D> glowTex = ModContent.Request<Texture2D>("TerramazingGijinkaMadhouse/Content/NPCs/Hypnos/JHypnos_Glow");
@@ -110,37 +110,38 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 
 		#region UniversalVariables
 		//public bool observingSleepingPlayer = false;
+		public int portalTimer = 100;
 		#endregion
 
 		#region InstanceManagement
-		private static int instance = -1;
-		public static NPC Instance
-		{
-			get
-			{
-				if (instance == -1)
-				{
-					return null;
-				}
-				NPC hypnos = Main.npc.ElementAtOrDefault(instance);
-				if (hypnos == default || !hypnos.active)
-				{
-					//hypnos = Main.npc.Where(npc => npc != null && npc.active && )
-					instance = -1;
-					return null;
-				}
-				return hypnos;
-			}
-			set
-			{
-				instance = value == null? -1 : value.whoAmI;
-			}
-		}
+		//private static int instance = -1;
+		//public static NPC Instance
+		//{
+		//	get
+		//	{
+		//		if (instance == -1)
+		//		{
+		//			return null;
+		//		}
+		//		NPC hypnos = Main.npc.ElementAtOrDefault(instance);
+		//		if (hypnos == default || !hypnos.active)
+		//		{
+		//			//hypnos = Main.npc.Where(npc => npc != null && npc.active && )
+		//			instance = -1;
+		//			return null;
+		//		}
+		//		return hypnos;
+		//	}
+		//	set
+		//	{
+		//		instance = value == null ? -1 : value.whoAmI;
+		//	}
+		//}
 
-		public static void ResetInstance()
-		{
-			instance = -1;
-		}
+		//public static void ResetInstance()
+		//{
+		//	instance = -1;
+		//}
 
 		#endregion InstanceManagement
 
@@ -150,7 +151,7 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 			hypnos.active = false;
 			hypnos.netSkip = -1;
 			hypnos.life = 0;
-			instance = -1;
+			//instance = -1;
 			//hypnos = null;
 			timePassed = 0;
 		}
@@ -181,13 +182,15 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 			player.PutItemInInventory(ModContent.ItemType<Indulgence>());
 			//PutItemsInInventoryLikeIndulgence(player, ModContent.ItemType<Indulgence>());
 			//player.QuickSpawnItem(Instance.GetSource_GiftOrReward(), ModContent.ItemType<Indulgence>());
-			
+
 			//Item.NewItem(player.GetSource_GiftOrReward(), player.Center, ModContent.ItemType<Indulgence>(), noGrabDelay: true);
 			rewards.ForEach(reward => HandleRewardServer(player, reward));
 		}
 
 		public override void SendExtraAI(BinaryWriter writer)
 		{
+			writer.Write((byte)portalTimer);
+
 			for (int i = 0; i < 12; i++)
 			{
 				writer.Write((byte)neurons[i]);
@@ -198,6 +201,7 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 
 		public override void ReceiveExtraAI(BinaryReader reader)
 		{
+			portalTimer = reader.ReadByte();
 			for (int i = 0; i < 12; i++)
 			{
 				neurons[i] = reader.ReadByte();
@@ -243,7 +247,7 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 		public static void HandleRewardServer(Player player, HypnosReward reward)
 		{
 
-			Vector2 position = Instance == null ? Instance.Center : player.Center;
+			Vector2 position = player.TalkNPC == null ? player.TalkNPC.Center : player.Center;
 			//ModContent.GetInstance<TerramazingGijinkaMadhouseMod>().Logger.Info(reward);
 
 			void SpawnItem(int type, int stack = 1) { Item.NewItem(player.GetSource_GiftOrReward(), position, type, stack); }
@@ -265,7 +269,7 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 						packet.Send(player.whoAmI);
 					}
 
-					
+
 					break;
 				case HypnosReward.ExoPrisms:
 					if (ModCompatibility.calamityEnabled)
@@ -289,7 +293,7 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 		#endregion
 
 		#region Overrides
-		public static int[] neurons = new int[12] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+		public int[] neurons = new int[12] { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 
 		//List<int> neurons = new List<int>();
 
@@ -316,10 +320,10 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 
 			int index = Array.IndexOf(neurons, -1);
 
-			neurons[index] = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<AergiaNeuron>(), 10, 1, -1, index);
+			neurons[index] = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<AergiaNeuron>(), 10, 1, -1, index, NPC.whoAmI);
 
 			NPC.localAI[3] = 1;
-			
+
 		}
 
 		//public override void SendExtraAI(BinaryWriter writer)
@@ -439,7 +443,13 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 		}
 		public override void OnKill()
 		{
-			instance = -1;
+			//instance = -1;
+			foreach (int neuron in neurons)
+			{
+				if (neuron == -1) continue;
+				Main.projectile[neuron].Kill();
+			}
+
 			DropCoins();
 		}
 
@@ -459,7 +469,7 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 		{
 			if (NPC.life <= 0)
 			{
-				instance = -1;
+				//instance = -1;
 				SoundEngine.PlaySound(NPC.DeathSound, NPC.position);
 				for (int num585 = 0; num585 < 25; num585++)
 				{
@@ -512,6 +522,7 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 
 		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
 		{
+			if (portalTimer > 0) return false;
 			Vector2 position = NPC.Center - screenPos + new Vector2(3 + (NPC.spriteDirection == 1 ? -7 : 0), -9f);
 			spriteBatch.Draw
 			(
@@ -544,7 +555,7 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 		#region AI
 		public override void AI()
 		{
-			instance = NPC.whoAmI;
+			//instance = NPC.whoAmI;
 			//CombatText.NewText(NPC.Hitbox, Color.White, timePassed.ToString());
 			NPC.homeless = true;
 
@@ -553,7 +564,7 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 				FindHomeTile(out int tileX, out int tileY);
 				FindHomeTileAndSpawnPointTraveling(tileX, tileY, out NPC.homeTileX, out NPC.homeTileY, out int _, out int _);
 			}
-
+			//Dust.NewDust(new Vector2(NPC.homeTileX * 16, NPC.homeTileY * 16), 16, 16, DustID.Shadowflame);
 			if (Main.rand.NextBool(200))
 			{
 
@@ -564,12 +575,18 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 					Vector2 home = homePoint.ToWorldCoordinates(0, 0);
 					//Dust.NewDustPerfect(home, DustID.Electric, Vector2.Zero);
 					//TerramazingGijinkaMadhouseMod.Instance.Logger.Info($"{Vector2.Distance(NPC.position, home) > 500f} && {MadhouseUtils.TileCapable(homePoint.X, homePoint.Y)} && {!IsNpcOnscreen(NPC.Center)} && {!IsNpcOnscreen(home)}");
-					if (Vector2.Distance(NPC.position, home) > 1000f && MadhouseUtils.TileCapable(homePoint.X, homePoint.Y) && !IsNpcOnscreen(NPC.Center) && !IsNpcOnscreen(home))
+					if (!IsNpcOnscreen(NPC.Center) && !IsNpcOnscreen(home))
 					{
-						NPC.position = home;
-						NPC.velocity = Vector2.Zero;
-						NPC.netUpdate = true;
+						if (Vector2.Distance(NPC.position, home) > 500f)
+						{
+							NPC.position = home;
+							NPC.velocity = Vector2.Zero;
 
+							portalTimer = 100;
+							NPC.netUpdate = true;
+						}
+						
+						
 					}
 				}
 
@@ -612,8 +629,25 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 
 		}
 
+		bool soundFlag = false;
+		public override bool PreAI()
+		{
+			if (portalTimer > 0)
+			{
+				if (Main.rand.NextBool(2) && !Main.dedServ) MakePortal();
 
-
+				NPC.noGravity = true;
+				portalTimer--;
+				return false;
+			}
+			if (!soundFlag)
+			{
+				SoundEngine.PlaySound(in ClamFlare, NPC.Center);
+				soundFlag = true;
+			}
+			NPC.noGravity = false;
+			return base.PreAI();
+		}
 
 		#endregion
 
@@ -621,31 +655,39 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 		public static bool ShouldDespawn => timePassed >= despawnTime;
 		public static void UpdateTravelingMerchant()
 		{
-			NPC hypnos = Instance;
+			int whoAmI = NPC.FindFirstNPC(ModContent.NPCType<JHypnos>());
+			bool travelerIsThere = (whoAmI != -1);
+
 			// Find an Explorer if there's one spawned in the world
-			if (hypnos != null && ShouldDespawn && !IsNpcOnscreen(hypnos.Center)) // If it's past the despawn time and the NPC isn't onscreen
+			if (travelerIsThere && ShouldDespawn) // If it's past the despawn time and the NPC isn't onscreen
 			{
+				NPC hypnos = Main.npc[whoAmI];
+
+				if (!IsNpcOnscreen(hypnos.Center))
+				{
+					string fullName = hypnos.FullName;
+
+					HandleDepartHypnosUniversal(hypnos);
+					if (Main.netMode == NetmodeID.SinglePlayer)
+					{
+						Main.NewText(Language.GetTextValue(Lang.misc[35].Key, fullName), 50, 125);
+					}
+					else if (Main.netMode == NetmodeID.Server)
+					{
+						ModPacket packet = TerramazingGijinkaMadhouse.Instance.GetPacket();
+						packet.Write((byte)MadhouseMessageType.HypnosDeparted);
+						packet.Send();
+						ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[35].Key, fullName), new Color(50, 125, 255));
+					}
+
+
+					timePassed = 0;
+				}
 				// Here we despawn the NPC and send a message stating that the NPC has despawned
-				string fullName = hypnos.FullName;
-
-				HandleDepartHypnosUniversal(hypnos);
-				if (Main.netMode == NetmodeID.SinglePlayer)
-				{
-					Main.NewText(Language.GetTextValue(Lang.misc[35].Key, fullName), 50, 125);
-				}
-				else if (Main.netMode == NetmodeID.Server)
-				{
-					ModPacket packet = TerramazingGijinkaMadhouse.Instance.GetPacket();
-					packet.Write((byte)MadhouseMessageType.HypnosDeparted);
-					packet.Send();
-					ChatHelper.BroadcastChatMessage(NetworkText.FromKey(Lang.misc[35].Key, fullName), new Color(50, 125, 255));
-				}
-
-
-				timePassed = 0;
+				
 			}
 
-			if (hypnos != null)
+			if (travelerIsThere)
 			{
 				timePassed++;
 			}
@@ -663,7 +705,7 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 				// You can also add a day counter here to prevent the merchant from possibly spawning multiple days in a row.
 
 				// NPC won't spawn today if it stayed all night
-				if (hypnos == null && NPC.downedMechBossAny && Main.rand.NextBool(5))
+				if (!travelerIsThere && NPC.downedMechBossAny && Main.rand.NextBool(4))
 				{ // 4 = 25% Chance
 				  // Here we can make it so the NPC doesnt spawn at the EXACT same time every time it does spawn
 					spawnTime = GetRandomSpawnTime(1, 54000); // minTime = 6:00am, maxTime = 7:30am
@@ -679,37 +721,105 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 			}
 
 			// Spawn the traveler if the spawn conditions are met (time of day, no events, no sundial)
-			if (hypnos == null && CanSpawnNow())
+			if (!travelerIsThere && CanSpawnNow())
 			{
-				SpawnTravellingMerchant();
+				SpawnTravelingMerchant();
 			}
 		}
 
-		public static void SpawnTravellingMerchant( Player calledPlayer = null)
+		public static void SpawnTravelingMerchant(Player calledPlayer = null)
 		{
 			if (Main.netMode == NetmodeID.MultiplayerClient)
 			{
 				ModPacket packet = ModContent.GetInstance<TerramazingGijinkaMadhouse>().GetPacket();
 				packet.Write((byte)MadhouseMessageType.HypnosArrived);
-				packet.Write(calledPlayer == null? -1: (byte)calledPlayer.whoAmI + 1);
+				packet.Write(calledPlayer == null ? -1 : (byte)calledPlayer.whoAmI + 1);
 				packet.Send();
+				return;
 			}
-			else
+			if (calledPlayer != null)
 			{
-				FindHomeTile(out int tileX, out int tileY);
+				Vector2 center = calledPlayer.Center;
 
-				//FindSpawnPoint(new Point(homeX, homeY), out int bestX, out int bestY);
-				FindHomeTileAndSpawnPointTraveling(tileX, tileY, out int homeX, out int homeY, out int spawnX, out int spawnY);
+				//int playerX = Main.spawnTileX;
+				//int playerY = Main.spawnTileY;
+				//if (calledPlayer.SpawnX != -1 && calledPlayer.SpawnY != -1)
+				//{
+				//	playerX = calledPlayer.SpawnX;
+				//	playerY = calledPlayer.SpawnY;
+				//}
+				//else
+				//{
+				//	//IEnumerable<NPC> npcs = Main.npc.Where(npc => npc.active && npc.townNPC && npc.type != NPCID.OldMan && !npc.homeless);
+				//	//if (npcs.Any())
+				//	//{
+				//	//	NPC randomNPC = npcs.Random();
+				//	//	playerX = randomNPC.homeTileX;
+				//	//	playerY = randomNPC.homeTileY;
+				//	//}
+				//	float minDistance = float.MaxValue;
+				//	NPC nearestNPC = null;
+				//	foreach (NPC npc in Main.npc)
+				//	{
+				//		if (!(npc.active && npc.townNPC && npc.type != NPCID.OldMan && !npc.homeless)) continue;
 
-				SpawnTravellingMerchant(homeX, homeY, spawnX, spawnY, calledPlayer);
+				//		if (npc.Center.Distance(calledPlayer.Center) < minDistance)
+				//		{
+				//			minDistance = npc.Center.Distance(calledPlayer.Center);
+				//			nearestNPC = npc;
+				//		}
+				//	}
+				//	if (nearestNPC != null)
+				//	{
+				//		playerX = nearestNPC.homeTileX;
+				//		playerY = nearestNPC.homeTileY;
+				//	}
+					
+				//}
+
+				//int portalX = (int)(center.X + Main.rand.Next(-100, 100));
+
+				//int portalY = (int)(center.Y) + Main.rand.Next(-100, 100);
+				FindHomeTileAndSpawnPointTraveling((int)(center.X / 16), (int)(center.Y / 16), out int tilX, out int tilY, out int portalX, out int portalY);
+
+
+				SpawnTravelingMerchant(tilX, tilY, portalX, portalY, calledPlayer);
+				return;
 			}
+			FindHomeTile(out int tileX, out int tileY, calledPlayer);
 
-			
+			//FindSpawnPoint(new Point(homeX, homeY), out int bestX, out int bestY);
+			FindHomeTileAndSpawnPointTraveling(tileX, tileY, out int homeX, out int homeY, out int spawnX, out int spawnY);
+
+			SpawnTravelingMerchant(homeX, homeY, spawnX, spawnY, calledPlayer);
+
+
+
 		}
 
-		public static void SpawnTravellingMerchant(int homeX, int homeY, int spawnX, int spawnY, Player calledPlayer = null)
+		public void MakePortal()
 		{
-			
+
+			int num5 = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Electric, 0f, 0f, 200, default(Color), 1.5f);
+			Main.dust[num5].noGravity = true;
+			Dust obj = Main.dust[num5];
+			obj.velocity *= 0.75f;
+			Main.dust[num5].fadeIn = 1.3f;
+			Vector2 vector = new Vector2((float)Main.rand.Next(-400, 401), (float)Main.rand.Next(-400, 401));
+
+			vector.Normalize();
+			vector *= (float)Main.rand.Next(100, 200) * 0.04f;
+			Main.dust[num5].velocity = vector;
+			vector.Normalize();
+			vector *= 34f;
+			Main.dust[num5].position = NPC.Center - vector;
+
+
+		}
+
+		public static void SpawnTravelingMerchant(int homeX, int homeY, int spawnX, int spawnY, Player calledPlayer = null)
+		{
+
 
 			//TerramazingGijinkaMadhouseMod.Instance.Logger.Info($"({homeX}, {homeY}) ({bestX}, {bestY})");
 
@@ -725,9 +835,9 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 			spawnTime = double.MaxValue;
 			timePassed = 0;
 
-			Instance = hypnos;
+			//Instance = hypnos;
 
-			
+
 			if (calledPlayer != null && calledPlayer.active)
 			{
 				if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("Mods.TerramazingGijinkaMadhouse.Annoucement.HasArrivedFromRequest", hypnos.FullName, calledPlayer.name), 50, 125, 255);
@@ -755,8 +865,37 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 			return Main.dayTime && Main.time >= spawnTime;
 		}
 
-		public static void FindHomeTile(out int homeTileX, out int homeTileY)
+		public static void FindHomeTile(out int homeTileX, out int homeTileY, Player calledPlayer = null)
 		{
+			//if (calledPlayer != null)
+			//{
+			//	if (calledPlayer.SpawnX != -1 && calledPlayer.SpawnY != -1)
+			//	{
+			//		homeTileX = calledPlayer.SpawnX;
+			//		homeTileY = calledPlayer.SpawnY;
+			//		return;
+			//	}
+
+			//	float minDistance = float.MaxValue;
+			//	NPC nearestNPC = null;
+			//	foreach (NPC npc in Main.npc)
+			//	{
+			//		if (!(npc.active && npc.townNPC && npc.type != NPCID.OldMan && !npc.homeless && !IsNpcOnscreen(new Point(npc.homeTileX, npc.homeTileY).ToVector2()))) continue;
+
+			//		if (npc.Center.Distance(calledPlayer.Center) < minDistance)
+			//		{
+			//			minDistance = npc.Center.Distance(calledPlayer.Center);
+			//			nearestNPC = npc;
+			//		}
+			//	}
+
+			//	if (nearestNPC != null)
+			//	{
+			//		homeTileX = nearestNPC.homeTileX;
+			//		homeTileY = nearestNPC.homeTileY;
+			//	}
+			//}
+
 			List<Player> players = Main.player.Where(p => p != null && p.active).ToList();
 			players.ForEach(player => player.FindSpawn());
 			IEnumerable<Player> playersChangedSpawn = players.Where(p => p.SpawnX != -1 && p.SpawnY != -1);
@@ -767,8 +906,9 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 				homeTileY = random.SpawnY;
 				return;
 			}
-			IEnumerable<NPC> npcs = Main.npc.Where(npc => npc.active && npc.townNPC && npc.type != NPCID.OldMan && !npc.homeless && !IsNpcOnscreen(new Point(npc.homeTileX, npc.homeTileY).ToVector2()));
-			if (npcs.Any())
+			IEnumerable<NPC> npcs = Main.npc.Where(npc => npc.active && npc.townNPC && npc.type != NPCID.OldMan && !npc.homeless);
+				//IEnumerable<NPC> npcs = Main.npc.Where(npc => npc.active && npc.townNPC && npc.type != NPCID.OldMan && !npc.homeless && !IsNpcOnscreen(new Point(npc.homeTileX, npc.homeTileY).ToVector2()));
+				if (npcs.Any())
 			{
 				NPC randomNPC = npcs.Random();
 				homeTileX = randomNPC.homeTileX;
@@ -848,19 +988,19 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 									break;
 								}
 								flag = true;
-								Rectangle value = new Rectangle(num11 * 16 + 8 - NPC.sWidth / 2 - NPC.safeRangeX, num12 * 16 + 8 - NPC.sHeight / 2 - NPC.safeRangeY, NPC.sWidth + NPC.safeRangeX * 2, NPC.sHeight + NPC.safeRangeY * 2);
-								for (int num4 = 0; num4 < 255; num4++)
-								{
-									if (Main.player[num4].active)
-									{
-										Rectangle val = new Rectangle((int)Main.player[num4].position.X, (int)Main.player[num4].position.Y, Main.player[num4].width, Main.player[num4].height);
-										if (val.Intersects(value))
-										{
-											flag = false;
-											break;
-										}
-									}
-								}
+								//Rectangle value = new Rectangle(num11 * 16 + 8 - NPC.sWidth / 2 - NPC.safeRangeX, num12 * 16 + 8 - NPC.sHeight / 2 - NPC.safeRangeY, NPC.sWidth + NPC.safeRangeX * 2, NPC.sHeight + NPC.safeRangeY * 2);
+								//for (int num4 = 0; num4 < 255; num4++)
+								//{
+								//	if (Main.player[num4].active)
+								//	{
+								//		Rectangle val = new Rectangle((int)Main.player[num4].position.X, (int)Main.player[num4].position.Y, Main.player[num4].width, Main.player[num4].height);
+								//		if (val.Intersects(value))
+								//		{
+								//			flag = false;
+								//			break;
+								//		}
+								//	}
+								//}
 								break;
 							}
 						}
@@ -875,10 +1015,24 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 					}
 				}
 			}
+
+			int num14 = num12;
+			for(int i = 0; i < 6; i++)
+			{
+				if (!Main.tile[num11, num12 - 4 - i].TileSolid() && !Main.tile[num11 - 1, num12 - 4 - i].TileSolid())
+				{
+					num14--;
+				}
+				else
+				{
+					break;
+				}
+			}
+
 			homeX = bestX;
 			homeY = bestY;
 			spawnX = num11 * 16;
-			spawnY = num12 * 16;
+			spawnY = num14 * 16;
 		}
 
 		//public static bool CheckSpwanTile(int tileX, int tileY)
@@ -1056,11 +1210,11 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 			);
 		}
 
-		public void Kill()
-		{
-			NPC.life = 0;
-			NPC.checkDead();
-		}
+		//public void Kill()
+		//{
+		//	NPC.life = 0;
+		//	NPC.checkDead();
+		//}
 
 		public void DropCoins()
 		{
@@ -1068,11 +1222,11 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 			hypnoCoins = 0;
 		}
 
-		public void KillWithCoins()
-		{
-			DropCoins();
-			Kill();
-		}
+		//public void KillWithCoins()
+		//{
+		//	DropCoins();
+		//	Kill();
+		//}
 
 
 
