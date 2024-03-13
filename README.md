@@ -26,6 +26,10 @@ Added a portable radio transmitter to request Hypnos' visit to your town, crafte
 Notes:
 
 Chibii Hypnos will be killed if Hypnos(Boss) is present and killed, dropping all golds collected.
+
+Now comes with emote!
+
+![](https://jesterromut.github.io/workshop/terramazing/emote.gif)
 <hr>
 
 ---- ZH ----
@@ -57,3 +61,7 @@ Chibii Hypnos will be killed if Hypnos(Boss) is present and killed, dropping all
 备注：
 
 在修普诺斯(boss)被击败的时候，修普诺斯娘会死掉，爆出所有收集的金币。
+
+现在有表情气泡了！
+
+![](https://jesterromut.github.io/workshop/terramazing/emote.gif)

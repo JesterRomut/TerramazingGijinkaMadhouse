@@ -28,6 +28,10 @@ Notes:
 
 Chibii Hypnos will be killed if Hypnos(Boss) is present and killed, dropping all golds collected.
 
+Now comes with emote!
+
+[img] https://jesterromut.github.io/workshop/terramazing/emote.gif [/img]
+
 version: {ModVersion}
 Source code: https://github.com/JesterRomut/TerramazingGijinkaMadhouse
 (It has reused a lot of old codes from 1yr ago, code readability is not guaranteed. ; ;)
@@ -64,6 +68,10 @@ Bug reports are welcomed in Github and comment section.
 备注：
 
 在修普诺斯(boss)被击败的时候，修普诺斯娘会死掉，爆出所有收集的金币。
+
+现在有表情气泡了！
+
+[img] https://jesterromut.github.io/workshop/terramazing/emote.gif [/img]
 
 版本: {ModVersion}
 源码: https://github.com/JesterRomut/TerramazingGijinkaMadhouse
