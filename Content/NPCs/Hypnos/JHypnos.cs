@@ -796,7 +796,7 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 			//FindSpawnPoint(new Point(homeX, homeY), out int bestX, out int bestY);
 			FindHomeTileAndSpawnPointTraveling(tileX, tileY, out int homeX, out int homeY, out int spawnX, out int spawnY);
 
-			SpawnTravelingMerchant(homeX, homeY, spawnX, spawnY, calledPlayer);
+			SpawnTravelingMerchant(homeX, homeY, spawnX, spawnY, null);
 
 
 
