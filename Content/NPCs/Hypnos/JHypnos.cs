@@ -742,7 +742,7 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 			{
 				ModPacket packet = ModContent.GetInstance<TerramazingGijinkaMadhouse>().GetPacket();
 				packet.Write((byte)MadhouseMessageType.HypnosArrived);
-				packet.Write(calledPlayer == null ? -1 : (byte)calledPlayer.whoAmI + 1);
+				packet.Write(calledPlayer == null ? 0 : (byte)calledPlayer.whoAmI + 1);
 				packet.Send();
 				return;
 			}
