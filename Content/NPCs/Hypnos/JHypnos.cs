@@ -321,7 +321,7 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 
 			int index = Array.IndexOf(neurons, -1);
 
-			neurons[index] = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<AergiaNeuron>(), 10, 1, -1, index, NPC.whoAmI);
+			neurons[index] = Projectile.NewProjectileDirect(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<AergiaNeuron>(), 10, 1, -1, index, NPC.whoAmI).identity;
 
 			NPC.localAI[3] = 1;
 
@@ -450,7 +450,8 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 			foreach (int neuron in neurons)
 			{
 				if (neuron == -1) continue;
-				Main.projectile[neuron].Kill();
+				Main.projectile.FirstOrDefault(p => p.identity == neuron).Kill();
+				//Main.projectile[neuron].Kill();
 			}
 
 			DropCoins();

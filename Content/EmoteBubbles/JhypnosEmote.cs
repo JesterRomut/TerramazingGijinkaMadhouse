@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Terraria;
 using Terraria.GameContent.UI;
 using Terraria.ModLoader;
 
@@ -14,6 +15,11 @@ namespace TerramazingGijinkaMadhouse.Content.EmoteBubbles
 		{
 			// Add NPC emotes to "Town" category.
 			AddToCategory(EmoteID.Category.Town);
+		}
+
+		public override bool IsUnlocked()
+		{
+			return NPC.downedMechBossAny;
 		}
 	}
 }
