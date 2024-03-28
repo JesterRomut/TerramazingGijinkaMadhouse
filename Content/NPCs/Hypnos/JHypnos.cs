@@ -713,6 +713,7 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 				{ // 4 = 25% Chance
 				  // Here we can make it so the NPC doesnt spawn at the EXACT same time every time it does spawn
 					spawnTime = GetRandomSpawnTime(1, 54000); // minTime = 6:00am, maxTime = 7:30am
+					Main.NewText($"{spawnTime}");
 															  //if (Main.netMode == NetmodeID.Server)
 															  //{
 															  //    ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"debug: spawntime = {spawnTime}"), Color.Purple);
@@ -724,8 +725,11 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 				}
 			}
 
-			spawnTime.GetType();
 			// Spawn the traveler if the spawn conditions are met (time of day, no events, no sundial)
+			//if (spawnTime < double.MaxValue)
+			//{
+			//	//Main.NewText($"{travelerIsThere}, {CanSpawnNow()}");
+			//}
 			if (!travelerIsThere && CanSpawnNow())
 			{
 				SpawnTravelingMerchant();
@@ -863,8 +867,8 @@ namespace TerramazingGijinkaMadhouse.Content.NPCs.Hypnos
 			// can't spawn if any events are running
 
 			// can't spawn if the sundial is active
-			if (Main.IsFastForwardingTime()/* tModPorter Note: Removed. Suggestion: IsFastForwardingTime(), fastForwardTimeToDawn or fastForwardTimeToDusk */)
-				return false;
+			//if (Main.IsFastForwardingTime()/* tModPorter Note: Removed. Suggestion: IsFastForwardingTime(), fastForwardTimeToDawn or fastForwardTimeToDusk */)
+			//	return false;
 
 			// can spawn if daytime, and between the spawn and despawn times
 			return Main.time >= spawnTime;
